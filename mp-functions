@@ -1,0 +1,24 @@
+#! /bin/sh
+
+rootdir=/home/cstrauss/projetos/minipack/minipack-0.1
+
+builddir=$rootdir/build
+packdir=$rootdir/packs
+recipedir=$rootdir/recipes
+sourcedir=$rootdir/sources
+resultdir=$rootdir/result
+	patchdir=$rootdir/patches
+
+test -f ~/minipack.conf && . ~/minipack.conf
+test -f $rootdir/minipack.conf && . $rootdir/minipack.conf
+
+get_recipe_name()
+{
+  name=$recipedir/$1.recipe
+  if [ ! -f $name ]; then
+    echo >&2 "Recipe for \"$1\" not found."
+    exit 1
+  fi
+  echo $name
+}
+

@@ -1,4 +1,4 @@
 name=glib
-version=2.16.3
+version=2.18.1
 release=1
-download=http://ftp.gnome.org/pub/gnome/sources/glib/2.16
+download=http://ftp.gnome.org/pub/gnome/sources/glib/2.18

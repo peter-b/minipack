@@ -1,5 +1,5 @@
 name=gettext
-version=0.16.1
+version=0.17
 release=1
 origin=gnu
 configure_opt=--enable-relocatable

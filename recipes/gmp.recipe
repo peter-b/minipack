@@ -1,11 +1,6 @@
 name=gmp
-version=4.2.2
+version=4.2.4
 release=1
 origin=gnu
 configure_opt='--disable-static --enable-shared'
 
-
-src_prep()
-{
-  autoreconf -i -f -v
-}

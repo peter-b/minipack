@@ -1,6 +1,6 @@
 #! /bin/sh
 
-rootdir=/home/cstrauss/projetos/minipack/minipack-0.1
+rootdir=/home/cstrauss/programas/programar/minipack-0.1
 
 builddir=$rootdir/build
 packdir=$rootdir/packs

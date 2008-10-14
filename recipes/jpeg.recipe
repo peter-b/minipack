@@ -1,0 +1,11 @@
+name=jpeg
+version=6b
+release=1
+download=ftp://ftp.uu.net/graphics/jpeg
+source=jpegsrc.v6b.tar.gz
+
+src_prep()
+{
+  mkdir -p m4
+  chmod +x config/install-sh
+}

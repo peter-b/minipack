@@ -1,0 +1,11 @@
+name=gmp
+version=4.2.2
+release=1
+origin=gnu
+configure_opt='--disable-static --enable-shared'
+
+
+src_prep()
+{
+  autoreconf -i -f -v
+}

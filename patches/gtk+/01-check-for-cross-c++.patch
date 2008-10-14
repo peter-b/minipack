@@ -1,0 +1,11 @@
+--- gtk+-2.13.0.orig/configure.in	2008-02-18 15:20:45.000000000 -0300
++++ gtk+-2.13.0/configure.in	2008-04-21 15:03:22.000000000 -0300
+@@ -146,7 +146,7 @@ dnl 
+ dnl Check for a working C++ compiler, but do not bail out, if none is found.
+ dnl We use this for an automated test for C++ header correctness.
+ dnl 
+-AC_CHECK_PROGS(CXX, [$CCC c++ g++ gcc CC cxx cc++ cl], gcc)
++AC_PROG_CXX
+ AC_LANG_SAVE
+ AC_LANG_CPLUSPLUS
+ 

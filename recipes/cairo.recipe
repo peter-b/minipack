@@ -1,0 +1,6 @@
+name=cairo
+version=1.6.4
+release=1
+download=http://www.cairographics.org/releases
+configure_opt=--without-x
+

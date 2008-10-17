@@ -1,0 +1,45 @@
+diff -ru guile-1.8.5-orig/libguile/gc-freelist.c guile-1.8.5/libguile/gc-freelist.c
+--- guile-1.8.5-orig/libguile/gc-freelist.c	2008-05-04 18:39:48.000000000 -0300
++++ guile-1.8.5/libguile/gc-freelist.c	2008-10-15 18:27:21.000000000 -0300
+@@ -23,8 +23,8 @@
+ #include "libguile/deprecation.h"
+ #include "libguile/private-gc.h"
+ 
+-scm_t_cell_type_statistics scm_i_master_freelist;
+-scm_t_cell_type_statistics scm_i_master_freelist2;
++scm_t_cell_type_statistics scm_i_master_freelist={};
++scm_t_cell_type_statistics scm_i_master_freelist2={};
+ 
+ 
+ 
+diff -ru guile-1.8.5-orig/libguile/gdbint.c guile-1.8.5/libguile/gdbint.c
+--- guile-1.8.5-orig/libguile/gdbint.c	2008-04-07 18:30:03.000000000 -0300
++++ guile-1.8.5/libguile/gdbint.c	2008-10-15 08:22:12.000000000 -0300
+@@ -92,11 +92,11 @@
+ 
+ char *gdb_language = "lisp/c";
+ 
+-SCM gdb_result;
++SCM gdb_result=0;
+ 
+-char *gdb_output;
++char *gdb_output=0;
+ 
+-int gdb_output_length;
++int gdb_output_length=0;
+ 
+ int scm_print_carefully_p;
+ 
+diff -ru guile-1.8.5-orig/libguile/threads.c guile-1.8.5/libguile/threads.c
+--- guile-1.8.5-orig/libguile/threads.c	2008-05-04 18:39:48.000000000 -0300
++++ guile-1.8.5/libguile/threads.c	2008-10-15 18:30:28.000000000 -0300
+@@ -1642,7 +1642,7 @@
+ 
+ /*** Initialization */
+ 
+-scm_i_pthread_key_t scm_i_freelist, scm_i_freelist2;
++scm_i_pthread_key_t scm_i_freelist={}, scm_i_freelist2={};
+ scm_i_pthread_mutex_t scm_i_misc_mutex;
+ 
+ #if SCM_USE_PTHREAD_THREADS
+

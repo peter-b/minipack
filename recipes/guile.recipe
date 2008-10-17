@@ -4,3 +4,10 @@ release=1
 origin=gnu
 configure_opt="--disable-error-on-warning"
 
+src_prep()
+{
+ libtoolize
+ (cd guile-readline && libtoolize)
+ autoreconf -ivf
+}
+

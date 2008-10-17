@@ -2,5 +2,5 @@
 
 . mp-functions
 
-$resultdir/bin/glib-mkenums $*
+$resultdir/bin/glib-mkenums "$@"
 

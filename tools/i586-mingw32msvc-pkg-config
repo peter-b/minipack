@@ -4,4 +4,4 @@
 
 export PKG_CONFIG_LIBDIR=$resultdir/lib/pkgconfig
 
-/usr/bin/pkg-config $*
+/usr/bin/pkg-config "$@"

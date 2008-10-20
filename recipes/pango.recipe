@@ -2,3 +2,4 @@ name=pango
 version=1.22.0
 release=1
 download=http://ftp.gnome.org/pub/gnome/sources/pango/1.22
+configure_opt="--with-included-modules"

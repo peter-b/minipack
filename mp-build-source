@@ -61,7 +61,7 @@ do_configure()
     pkg_configure_opt="$pkg_configure_opt LDFLAGS=-L$pkg_instdir/lib"
   fi
   
-  echo 'Configuring...' $host and $build
+  echo 'Configuring...'
   mkdir -p ../logs
   ./configure $pkg_configure_opt > ../logs/configure.log
 }

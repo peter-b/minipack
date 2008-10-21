@@ -1,4 +1,5 @@
 name=libtool
-version=2.2.4
+version=2.2.6a
+top_srcdir=libtool-2.2.6
 release=1
 origin=gnu

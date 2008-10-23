@@ -1,6 +1,0 @@
-#! /bin/sh
-
-. mp-functions
-
-$resultdir/bin/glib-mkenums "$@"
-

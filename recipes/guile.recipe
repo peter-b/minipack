@@ -3,6 +3,7 @@ version=1.8.5
 release=1
 origin=gnu
 configure_opt="--disable-error-on-warning"
+export ac_cv_sys_restartable_syscalls=no
 
 src_prep()
 {

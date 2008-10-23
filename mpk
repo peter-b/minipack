@@ -1,0 +1,43 @@
+#! /bin/sh
+
+bindir=$(dirname $0)
+prog=$(basename $0)
+case $bindir in
+/*) ;;
+*) bindir=$PWD/$bindir;;
+esac
+mpk=$bindir/$prog
+prefix=$(cd $bindir && pwd)
+tooldir=$prefix/tools
+
+topdir=$PWD
+builddir=$topdir/build
+resultdir=$topdir/result
+sourcedir=$topdir/sources
+recipedir=$prefix/recipes
+patchdir=$prefix/patches
+
+export PATH=$tooldir:$resultdir/bin:$PATH
+
+test -f ~/minipack.conf && . ~/minipack.conf
+test -f $topdir/minipack.conf && . $topdir/minipack.conf
+
+get_recipe_name()
+{
+  name=$recipedir/$1.recipe
+  if [ ! -f $name ]; then
+    echo >&2 "Recipe for \"$1\" not found."
+    exit 1
+  fi
+  echo $name
+}
+
+cmd=$1
+shift
+tool=$tooldir/mpk-$cmd
+if [ -f $tool ]; then
+  . $tool "$@"
+else
+  echo $prog: Invalid command: $cmd
+fi
+

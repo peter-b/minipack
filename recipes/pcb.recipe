@@ -1,0 +1,16 @@
+name=pcb
+version=20080202
+release=1
+origin=sf
+
+# configure-time test fails because of stdcall signature
+export ac_cv_func_gdImageGif=yes
+export ac_cv_func_gdImageJpeg=yes
+export ac_cv_func_gdImagePng=yes
+
+src_prep()
+{
+  do_prep
+  mkdir m4
+  autoreconf -v
+}

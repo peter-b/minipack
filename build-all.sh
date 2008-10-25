@@ -1,7 +1,4 @@
 NEVERBUILD="
-fontconfig
-freetype
-expat
 "
 
 NOBUILD="
@@ -14,6 +11,9 @@ jpeg
 zlib
 libpng
 tiff
+expat
+freetype
+fontconfig
 pixman
 glib
 atk
@@ -23,6 +23,17 @@ gtk+
 libtool
 gmp
 guile
+gd
+pcb
+libgeda
+geda-symbols
+geda-gschem
+geda-gnetlist
+geda-gattrib
+geda-gsymcheck
+geda-utils
+geda-docs
+geda-examples
 "
 
 fail()
@@ -41,6 +52,10 @@ succeed()
   echo "Build succeeded."
   echo "====================="
 }
+
+for D in $BUILD; do
+  ./mpk source $D || fail
+done
 
 for D in $BUILD; do
   ./mpk build $D || fail

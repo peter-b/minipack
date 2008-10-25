@@ -1,0 +1,9 @@
+name=geda-gsymcheck
+version=1.4.1
+release=1
+download=http://geda.seul.org/release/v1.4/1.4.1
+
+src_prep()
+{
+   autoconf
+}

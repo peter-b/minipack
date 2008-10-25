@@ -1,0 +1,4 @@
+Minipack's design was inspired by:
+* Cygwin's cygport, by Yaakov Selkowitz <yselkowitz@users.sourceforge.net>
+* Gentoo's portage (numerous authors)
+* NetBSD's pkgsrc (numerous authors)

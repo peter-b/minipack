@@ -41,8 +41,13 @@ unpack_source()
   mkdir -p $buildroot
   cd $buildroot
 
-  tar -xf $sourcename
-  
+  case $source_package_type in
+    tar.*)
+      tar -xf $sourcename ;;
+    zip)
+      unzip $sourcename ;;
+  esac
+
   if [ $? != 0 ]; then
     echo >&2 "$(basename $0) unpack: Failed to unpack $sourcename"
     exit 1

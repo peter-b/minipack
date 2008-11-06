@@ -53,8 +53,15 @@ unpack_source()
   pkg_patchdir=$patchdir/$name
   
   if [ -d $pkg_patchdir ]; then
-    find $pkg_patchdir -name '*.patch' -exec patch -p1 -i '{}' \;
-  fi
+    patches=`find $pkg_patchdir -name '*.patch' | sort`
+    for p in $patches; do
+      patch -p1 -i "$p"
+      if [ $? != 0 ]; then
+        echo >&2 "$(basename $0) unpack: Failed apply patches for $sourcename"
+        exit 1
+      fi
+    done
+  fi  
   
   src_prep
   

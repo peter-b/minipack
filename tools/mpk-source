@@ -48,10 +48,17 @@ do_get_source()
     exit 1
   fi
 
-  mkdir -p $sourcedir
-  cd $sourcedir
+  mkdir -p $sourcedir/partial
+  cd $sourcedir/partial
   echo Downloading $name from $pkg_download ...
   wget -c $pkg_download
+
+  if [ $? != 0 ]; then
+    echo >&2 "$(basename $0) source: Failed to download $name"
+    exit 1
+  fi
+  
+  mv $sourcedir/partial/$source $sourcedir
 }
 
 case $1 in

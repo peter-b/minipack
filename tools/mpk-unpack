@@ -66,9 +66,16 @@ unpack_source()
         exit 1
       fi
     done
-  fi  
-  
+  fi
+
+  export ACLOCAL="aclocal -I $resultdir/share/aclocal"  
+
   src_prep
+
+  if [ $? != 0 ]; then
+    echo >&2 "$(basename $0) unpack: Failed to prepare build directory for $sourcename"
+    exit 1
+  fi
   
 }
 

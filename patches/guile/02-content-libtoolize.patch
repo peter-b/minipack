@@ -1,50 +1,13 @@
-diff --git a/Makefile.am b/Makefile.am
-index a275f01..74fbaa1 100644
---- a/Makefile.am
-+++ b/Makefile.am
-@@ -35,7 +35,7 @@ EXTRA_DIST = LICENSE HACKING GUILE-VERSION FAQ guile-1.8.pc.in
- 
- TESTS = check-guile
- 
--ACLOCAL_AMFLAGS = -I guile-config
-+ACLOCAL_AMFLAGS = -I m4 -I guile-config
- 
- DISTCLEANFILES = check-guile.log
- 
 diff --git a/configure.in b/configure.in
-index 276172f..84560b7 100644
+index 276172f..bbc070e 100644
 --- a/configure.in
 +++ b/configure.in
-@@ -38,6 +38,7 @@ AC_INIT(patsubst(m4_esyscmd(. ./GUILE-VERSION && echo ${PACKAGE}),[
+@@ -38,7 +38,7 @@ AC_INIT(patsubst(m4_esyscmd(. ./GUILE-VERSION && echo ${PACKAGE}),[
  ]),
          [bug-guile@gnu.org])
  AC_CONFIG_AUX_DIR([build-aux])
+-AC_CONFIG_MACRO_DIR([m4])
 +AC_CONFIG_MACRO_DIR([guile-config])
- AC_CONFIG_MACRO_DIR([m4])
  AC_CONFIG_SRCDIR(GUILE-VERSION)
  
-diff --git a/guile-readline/Makefile.am b/guile-readline/Makefile.am
-index f1f0387..4d2c88e 100644
---- a/guile-readline/Makefile.am
-+++ b/guile-readline/Makefile.am
-@@ -21,6 +21,8 @@
- 
- SUBDIRS = ice-9
- 
-+ACLOCAL_AMFLAGS = -I m4
-+
- ## Prevent automake from adding extra -I options
- DEFS = @DEFS@ @EXTRA_DEFS@
- ## Check for headers in $(srcdir)/.., so that #include
-diff --git a/guile-readline/configure.in b/guile-readline/configure.in
-index 9098a31..aba1a54 100644
---- a/guile-readline/configure.in
-+++ b/guile-readline/configure.in
-@@ -9,6 +9,7 @@ AC_INIT(guile-readline,
- 
- AC_CONFIG_AUX_DIR([.])
- AC_CONFIG_SRCDIR(readline.c)
-+AC_CONFIG_MACRO_DIR([m4])
- AM_CONFIG_HEADER([guile-readline-config.h])
- AM_INIT_AUTOMAKE([foreign no-define])
- 
+ AM_INIT_AUTOMAKE([gnu no-define check-news])

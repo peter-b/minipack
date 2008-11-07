@@ -4,6 +4,11 @@ release=1
 download=http://www.libgd.org/releases
 configure_opt='--disable-static --enable-shared '
 
+src_prep()
+{
+  autoreconf -ivf
+}
+
 # Compatibility with existing binary package
 src_install()
 {

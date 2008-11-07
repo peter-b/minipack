@@ -26,7 +26,7 @@ build_source()
 
   if [ ! -d $pkg_builddir ]; then
     $mpk unpack $pkg
-    if [ ! -d $pkg_builddir ]; then
+    if [ $? != 0 -o ! -d $pkg_builddir ]; then
       echo >&2 "$(basename $0) build: Could not unpack $pkg"
       exit 1
     fi

@@ -22,6 +22,7 @@ pango
 gtk+
 libtool
 gmp
+mingw-libgnurx
 guile
 gd
 pcb

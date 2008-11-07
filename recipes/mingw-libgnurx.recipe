@@ -1,0 +1,6 @@
+name=mingw-libgnurx
+version=2.5.1
+release=1
+source=$name-$version-src.tar.gz
+download=http://downloads.sourceforge.net/mingw
+

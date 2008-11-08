@@ -35,6 +35,8 @@ sourcedir=$topdir/sources
 recipedir=$prefix/recipes
 patchdir=$prefix/patches
 
+MPK_VERSION=1.0.0
+
 export PATH=$tooldir:$resultdir/bin:$PATH
 
 test -f ~/minipack.conf && . ~/minipack.conf
@@ -52,6 +54,12 @@ get_recipe_name()
 
 cmd=$1
 shift
+case $cmd in
+  --version)
+    cmd=version ;;
+  --help)
+    cmd=help ;;
+esac
 tool=$tooldir/mpk-$cmd
 if [ -f $tool ]; then
   . $tool "$@"

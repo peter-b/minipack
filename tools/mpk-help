@@ -1,0 +1,9 @@
+echo "Usage:
+* $prog build <package>  - Download, unpack, and build a package.
+* $prog unpack <package> - Download and unpack a package.
+* $prog source <package> - Download a source package.
+* $prog --version        - Show the current Minipack version.
+* $prog --help           - Show this screen.
+
+Report bugs to http://code.google.com/p/minipack/issues/list"
+

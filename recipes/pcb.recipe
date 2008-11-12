@@ -2,6 +2,8 @@ name=pcb
 version=20080202
 release=1
 origin=sf
+ 
+configure_opt="--disable-update-desktop-database --disable-update-mime-database"
 
 # configure-time test fails because of stdcall signature
 export ac_cv_func_gdImageGif=yes

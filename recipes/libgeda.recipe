@@ -3,6 +3,8 @@ version=1.4.1
 release=1
 download=http://geda.seul.org/release/v1.4/1.4.1
 
+configure_opt="--disable-update-mime-database"
+
 src_prep()
 {
    export ACLOCAL_FLAGS="-I $resultdir/share/aclocal"

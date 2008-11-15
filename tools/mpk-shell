@@ -1,0 +1,56 @@
+# mpk-shell - enters a shell with a pre-defined environment.
+# Copyright (C) 2008 Cesar Strauss
+#
+# This file is part of Minipack - an automated build tool.
+#
+# Minipack is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Minipack is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Minipack. If not, see <http://www.gnu.org/licenses/>.
+
+create_shell()
+{
+
+  : ${SHELL:=/bin/sh}
+
+  echo "
+==============
+Minipack shell
+==============
+
+The following variables are set:
+
+PATH=$PATH
+
+PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR
+
+ACLOCAL=$ACLOCAL
+
+[To exit the Minipack shell, type 'exit'].
+"
+
+$SHELL --login -i
+
+echo "
+========================
+Minipack shell finished.
+========================
+"
+}
+
+pkg=$1
+
+if [ ! -z "$pkg" ]; then
+  recipe=$(get_recipe_name $pkg) || exit 1
+  . $recipe
+fi
+
+create_shell

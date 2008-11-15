@@ -2,6 +2,7 @@ echo "Usage:
 * $prog build <package>  - Download, unpack, and build a package.
 * $prog unpack <package> - Download and unpack a package.
 * $prog source <package> - Download a source package.
+* $prog shell [package]  - Enters a shell with a pre-defined environment.
 * $prog --version        - Show the current Minipack version.
 * $prog --help           - Show this screen.
 

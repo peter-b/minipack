@@ -2,7 +2,12 @@ name=gd
 version=2.0.35
 release=1
 download=http://www.libgd.org/releases
-configure_opt='--disable-static --enable-shared '
+
+configure_opt="
+  --disable-static
+  --enable-shared
+  --without-x
+"
 
 src_prep()
 {

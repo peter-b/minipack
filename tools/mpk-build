@@ -79,8 +79,6 @@ do_configure()
     pkg_configure_opt="$pkg_configure_opt LDFLAGS=-L$pkg_instdir/lib"
   fi
   
-  export PKG_CONFIG_LIBDIR=$resultdir/lib/pkgconfig
-
   echo "Configuring $pkg..."
   mkdir -p ../logs
   ./configure $pkg_configure_opt > ../logs/configure.log

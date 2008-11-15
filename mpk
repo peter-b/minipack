@@ -42,7 +42,10 @@ export PATH=$tooldir:$PATH
 test -f ~/minipack.conf && . ~/minipack.conf
 test -f $topdir/minipack.conf && . $topdir/minipack.conf
 
+# Setup environment variables
 export PATH=$resultdir/bin:$PATH
+export ACLOCAL="aclocal -I $resultdir/share/aclocal"  
+export PKG_CONFIG_LIBDIR=$resultdir/lib/pkgconfig
 
 get_recipe_name()
 {

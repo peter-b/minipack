@@ -67,8 +67,6 @@ unpack_source()
     done
   fi
 
-  export ACLOCAL="aclocal -I $resultdir/share/aclocal"  
-
   src_prep
 
   if [ $? != 0 ]; then

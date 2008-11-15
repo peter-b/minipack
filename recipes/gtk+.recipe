@@ -2,5 +2,12 @@ name=gtk+
 version=2.14.3
 release=1
 download=http://ftp.gnome.org/pub/gnome/sources/gtk+/2.14
-configure_opt="--without-libjasper --disable-cups --disable-gdiplus --with-included-loaders --with-included-immodules"
 
+configure_opt="
+  --without-libjasper
+  --disable-cups
+  --disable-gdiplus
+  --with-included-loaders
+  --with-included-immodules
+  --disable-rebuilds
+"

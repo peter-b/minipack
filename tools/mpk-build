@@ -21,7 +21,6 @@ build_source()
   : ${top_srcdir:=$name-$version}
 
   pkg_builddir=$builddir/$name-$version-$release/$top_srcdir
-  pkg_instdir=$resultdir
 
   if [ ! -d $pkg_builddir ]; then
     $mpk unpack $pkg
@@ -65,20 +64,8 @@ do_build()
 
 do_configure()
 {
-  pkg_configure_opt=$configure_opt
-  pkg_configure_opt="$pkg_configure_opt --prefix $pkg_instdir"
-  if [ -n "$host" ]; then
-    pkg_configure_opt="$pkg_configure_opt --host $host"
-  fi
-  if [ -n "$build" ]; then
-    pkg_configure_opt="$pkg_configure_opt --build $build"
-  fi
+  setup_configure_options
 
-  if [ -z "$configure_no_more_flags" ]; then
-    pkg_configure_opt="$pkg_configure_opt CPPFLAGS=-I$pkg_instdir/include"
-    pkg_configure_opt="$pkg_configure_opt LDFLAGS=-L$pkg_instdir/lib"
-  fi
-  
   echo "Configuring $pkg..."
   mkdir -p ../logs
   ./configure $pkg_configure_opt > ../logs/configure.log

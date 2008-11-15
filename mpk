@@ -57,6 +57,24 @@ get_recipe_name()
   echo $name
 }
 
+setup_configure_options()
+{
+  pkg_configure_opt=$configure_opt
+  pkg_configure_opt="$pkg_configure_opt --prefix=$resultdir"
+  if [ -n "$host" ]; then
+    pkg_configure_opt="$pkg_configure_opt --host=$host"
+  fi
+  if [ -n "$build" ]; then
+    pkg_configure_opt="$pkg_configure_opt --build=$build"
+  fi
+
+  if [ -z "$configure_no_more_flags" ]; then
+    pkg_configure_opt="$pkg_configure_opt CPPFLAGS=-I$resultdir/include"
+    pkg_configure_opt="$pkg_configure_opt LDFLAGS=-L$resultdir/lib"
+  fi
+}
+
+
 cmd=$1
 shift
 case $cmd in

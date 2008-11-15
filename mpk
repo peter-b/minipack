@@ -37,10 +37,12 @@ patchdir=$prefix/patches
 
 MPK_VERSION=1.0.0
 
-export PATH=$tooldir:$resultdir/bin:$PATH
+export PATH=$tooldir:$PATH
 
 test -f ~/minipack.conf && . ~/minipack.conf
 test -f $topdir/minipack.conf && . $topdir/minipack.conf
+
+export PATH=$resultdir/bin:$PATH
 
 get_recipe_name()
 {

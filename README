@@ -37,6 +37,7 @@ The main (and only) tool of minipack is called mpk:
 * mpk build <package>  - download, unpack, and build a package.
 * mpk unpack <package> - download and unpack a package
 * mpk source <package> - download a source package
+* mpk shell [package]  - enter a shell with a pre-defined build environment
 
 A cache of downloaded sources is kept in the 'sources' directory.
 

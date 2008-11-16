@@ -5,8 +5,9 @@ download=http://geda.seul.org/release/v1.4/1.4.1
 
 configure_opt="--disable-update-mime-database"
 
+export ACLOCAL_FLAGS="-I $resultdir/share/aclocal"
+
 src_prep()
 {
-   export ACLOCAL_FLAGS="-I $resultdir/share/aclocal"
    ./autogen.sh
 }

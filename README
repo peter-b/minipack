@@ -10,7 +10,7 @@ Windows, but minipack is more general-purpose than that.
 To install, unpack it in any directory, and optionally set the PATH to it.
 
 The tool can be run from anywhere, but it looks for a minipack.conf file
-in the current directory.
+in the current directory or in a parent directory.
 
 Some recipes for cross-compiling to Windows are included in the distribution:
 * libraries: gtk+, guile, gd, freetype, libpng, jpeg, zlib, gettext.

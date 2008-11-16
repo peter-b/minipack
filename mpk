@@ -27,11 +27,6 @@ esac
 mpk=$bindir/$prog
 prefix=$(cd $bindir && pwd)
 tooldir=$prefix/tools
-
-topdir=$PWD
-builddir=$topdir/build
-resultdir=$topdir/result
-sourcedir=$topdir/sources
 recipedir=$prefix/recipes
 patchdir=$prefix/patches
 
@@ -40,6 +35,27 @@ MPK_VERSION=1.0.0
 export PATH=$tooldir:$PATH
 
 test -f ~/minipack.conf && . ~/minipack.conf
+
+cwd=$PWD
+topdir=$cwd
+until [ "$topdir" = "/" ]; do
+  if [ -f $topdir/minipack.conf ]; then
+    break;
+  fi
+  cd ..
+  topdir=$PWD
+done
+cd $cwd
+
+if [ "$topdir" = "/" ]; then
+  echo Warning: no minipack.conf found.
+  topdir=$cwd
+fi
+
+builddir=$topdir/build
+resultdir=$topdir/result
+sourcedir=$topdir/sources
+
 test -f $topdir/minipack.conf && . $topdir/minipack.conf
 
 # Setup environment variables
@@ -61,6 +77,7 @@ setup_configure_options()
 {
   pkg_configure_opt=$configure_opt
   pkg_configure_opt="$pkg_configure_opt --prefix=$resultdir"
+
   if [ -n "$host" ]; then
     pkg_configure_opt="$pkg_configure_opt --host=$host"
   fi

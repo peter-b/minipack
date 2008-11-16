@@ -32,13 +32,13 @@ Minipack shell
 
 The following variables are set:
 
-PATH=$PATH
+mpk_opt=\""
 
-PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR
-ACLOCAL=$ACLOCAL
+for opt in $mpk_opt; do
+  echo "   $opt"
+done
 
-mpk_opt=$mpk_opt
-
+echo "\"
 topdir=$topdir
 builddir=$builddir
 resultdir=$resultdir

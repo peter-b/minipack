@@ -18,6 +18,10 @@
 
 create_shell()
 {
+  setup_configure_options
+  
+  export mpk_opt="$pkg_configure_opt"
+  export topdir builddir resultdir
 
   : ${SHELL:=/bin/sh}
 
@@ -31,8 +35,13 @@ The following variables are set:
 PATH=$PATH
 
 PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR
-
 ACLOCAL=$ACLOCAL
+
+mpk_opt=$mpk_opt
+
+topdir=$topdir
+builddir=$builddir
+resultdir=$resultdir
 
 [To exit the Minipack shell, type 'exit'].
 "
@@ -48,7 +57,7 @@ Minipack shell finished.
 
 pkg=$1
 
-if [ ! -z "$pkg" ]; then
+if [ -n "$pkg" ]; then
   recipe=$(get_recipe_name $pkg) || exit 1
   . $recipe
 fi

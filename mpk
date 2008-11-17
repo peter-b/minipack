@@ -91,9 +91,14 @@ setup_configure_options()
   fi
 }
 
+if [ -n "$1" ]; then
+  cmd=$1
+  shift
+else
+  echo "$prog: missing argument."
+  cmd=help
+fi
 
-cmd=$1
-shift
 case $cmd in
   --version)
     cmd=version ;;

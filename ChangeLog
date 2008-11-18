@@ -1,0 +1,314 @@
+commit 0c495538ae8a59fd5c394db98982283772020538
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Tue Nov 18 20:57:10 2008 -0200
+
+    Bump version to 1.1.0.
+
+commit 7f330df7c9efe68a6e24389560c23132c2a12492
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Tue Nov 18 20:53:23 2008 -0200
+
+    Add a NEWS file.
+
+commit 50dcf1babc953ac75a8bb0660a527cf6d144337a
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sun Nov 16 22:02:28 2008 -0200
+
+    Display usage info when invoked without arguments.
+
+commit c22f99310adf64d2b8852a980de7919c213a5224
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sun Nov 16 21:57:40 2008 -0200
+
+    Add some documentation for the new 'mpk shell' sub-command.
+
+commit 589b34326cc17ffceee928100767cab4bc6e0ae4
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sun Nov 16 21:46:58 2008 -0200
+
+    libgeda: Export variable so 'mpk shell' can pick it up.
+
+commit 87615c9c9686c56db0d75fa42094aef432c9046a
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sun Nov 16 21:45:44 2008 -0200
+
+    Search for minipack.conf in a parent directory.
+    
+    Walk parent directories until minipack.conf is found. This
+    directory becomes the new topdir.
+
+commit b55e062f13f78173d2c24fcb35d11ecab681cc13
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sun Nov 16 21:50:46 2008 -0200
+
+    Reformat the welcome message of 'mpk shell'.
+    
+    Remove some of the variables and print mpk_opt in
+    multiple lines.
+
+commit db1070b0d96f4ac748f0f5eecf0e10dd5016fb7a
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sun Nov 16 07:09:09 2008 -0200
+
+    Export more variables into 'mpk shell'.
+
+commit da1a66418a00a712e5e192a400b4ad023d3d49d6
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Nov 15 18:13:15 2008 -0200
+
+    Move configuration options to top-level.
+
+commit fd54013e27d5b684e38098eedfa84014f7c0b551
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Nov 15 16:30:17 2008 -0200
+
+    Add the 'shell' subcommand.
+    
+    Creates a shell with pre-defined environment variables. Makes manual
+    building easier.
+
+commit 6a38c91d7c77bbbf69bdf99cf12bdefdf9bd954c
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Nov 15 16:29:53 2008 -0200
+
+    Moves the exported variable definitions to the top-level.
+    
+    The new 'shell' subcommand will need to see all of these variables.
+
+commit d8d1f8e08546a1ffbfe4ce93044d485c0677845a
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Nov 15 15:01:18 2008 -0200
+
+    Gd: avoid testing for native X libraries.
+    
+    Use --without-x to avoid the detection of native X libraries.
+
+commit 349a60f6fc5e9ab634e54ea7954a1bcbe1850ba2
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Nov 15 15:00:00 2008 -0200
+
+    gtk+: Avoid calling some native tools during the build.
+    
+    Add --disable-rebuilds to the configure options, so it avoids calling
+    a native 'gtk-update-icon-cache'.
+
+commit 5cda6b0fe4f7be293a582627bb4ff696d6d11e29
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Nov 15 14:55:26 2008 -0200
+
+    Pick the correct result dir when placing it in PATH.
+    
+    The resultdir variable can be reset in minipack.conf, so PATH has
+    to be set only after reading it.
+
+commit 6dcf56902ac3262ad4500790b42ffc937408138b
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Wed Nov 12 19:37:54 2008 -0200
+
+    Avoid updating mime and desktop databases.
+
+commit 9245b30270f47f0db17070fc49b91b026fd78706
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Nov 8 21:06:29 2008 -0200
+
+    Update THANKS file.
+
+commit 9c52323190aced910ba12a952a1dc38be0c39bbe
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Nov 8 15:59:16 2008 -0200
+
+    Add --version and --help flags to 'mpk'.
+
+commit c70ddb208639563048231c0ba9eb0b96cd2a9d38
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Nov 8 15:11:04 2008 -0200
+
+    Bump licence to GPL 3+.
+    
+    Use the same licence as Cygport's, to allow code sharing.
+
+commit d3c776c270c1d59b4129f5e7d180c2495e8830e3
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Fri Nov 7 16:43:06 2008 -0200
+
+    Add a recipe for mingw-libgnurx.
+    
+    It's a regex implementation, used by Guile.
+
+commit ab92c15cb242fb6925e63960e1f2a812205db4a9
+Author: Peter Clifton <pcjc2@cam.ac.uk>
+Date:   Fri Nov 7 16:37:26 2008 -0200
+
+    Fix Guile to return correct mode flags on MinGW.
+    
+    On mingw32, guile is returning mode flags from fstat, and then comparing
+    them with flags such as O_RDWR. (fstat returns flags such as _S_IWRITE,
+    and the two are not compatible at all).
+
+commit e3fcae3f0ef71444d7ff5e9073eab249a1a8554d
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Thu Nov 6 23:40:08 2008 -0200
+
+    Use autogen.sh on gEDA/gaf.
+
+commit 98fe9ce7d545c68a18c598520278afb5991adb97
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Thu Nov 6 23:34:11 2008 -0200
+
+    Simplify autoreconf step on Guile.
+    
+    No need to pickup the m4 files generated by libtoolize,
+    since we pick them from our local m4 files.
+
+commit fb410c998987ef04858ddefc16fa9c4926cf466d
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Thu Nov 6 23:31:25 2008 -0200
+
+    Force autoreconf on Gd.
+    
+    Needed since configure.ac was modified.
+
+commit 6b0cfcf4d42f781000fe61c4014d56deb7d05ca3
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Thu Nov 6 23:26:57 2008 -0200
+
+    Specify our local m4 directory to aclocal.
+    
+    Avoid picking the native libtool m4 files.
+
+commit 8d274f0784b152c82e1644564077237017f0a7ab
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Thu Nov 6 22:37:17 2008 -0200
+
+    Detect error when unpacking.
+
+commit 88090ef2bdc34b57108e946f011de51e1a1a532f
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Thu Nov 6 18:05:37 2008 -0200
+
+    Allow partial downloads.
+    
+    Downloads will be made to a 'partial' directory, and only moved to the
+    'source' directory when ready.
+
+commit b12b0c42c5f085518b81f74ed4795825e65e1bbb
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Wed Nov 5 23:58:54 2008 -0200
+
+    Fix error when building Gd a second time.
+    
+    Add force flag to allow overwrite of bgd.lib.
+
+commit 58afa635a1cc70d41b5707ee7b20e80765c93c5a
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Wed Nov 5 23:52:17 2008 -0200
+
+    Allow sources in zip format.
+    
+    Thanks to Peter Clifton for suggesting this new feature and for providing
+    a starting point for the implementation.
+
+commit 25e75dcf370c0c3fd98733102baf591391e4079c
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Wed Nov 5 23:38:31 2008 -0200
+
+    Apply patches in correct order.
+    
+    As a side effect, no spaces are allowed in patch names anymore.
+    Thanks to Peter Clifton for reporting the bug and suggesting a fix.
+
+commit 90457eaa8c0fb4cda3f5fcc012c4ca8cc4db9237
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Oct 25 17:35:31 2008 -0200
+
+    Reword paragraph about build-all.sh script.
+
+commit 76d7231a22095039946310955fe58a5f2736b6f5
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Oct 25 11:14:26 2008 -0200
+
+    Add GPL 2+ licence.
+
+commit ab60faf7b1107974cade3625de65ff17f83d48d4
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Oct 25 18:26:14 2008 -0200
+
+    Add some documentation.
+
+commit d1d91c3f67492ea1791272b2584e3575ab8e052f
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Sat Oct 25 10:54:28 2008 -0200
+
+    Add patches and recipes for gd, PCB, and gEDA/gaf.
+
+commit 9b65df17dbc2adf15ac648b6969f60bffcf96833
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Thu Oct 23 00:14:54 2008 -0200
+
+    Rewrite and name change.
+
+commit 71a3877755268ece60f0f7acf5542ef0899d28dc
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Tue Oct 21 07:15:55 2008 -0200
+
+    Update to latest libtool.
+
+commit e68b19069dc08de3b37075410269aa152b9d345f
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Tue Oct 21 07:15:37 2008 -0200
+
+    Remove build message.
+
+commit 48af547a178a5dc040016c63d05429ebe0168bab
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Tue Oct 21 07:15:08 2008 -0200
+
+    Use the system pkg-config directly.
+
+commit 8ce7005d91907231eef910a0b4f062c4d8737419
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Mon Oct 20 19:41:01 2008 -0200
+
+    Improve building gtk.
+
+commit c50bcbfd0a0aa70184305bbc0338f2f23c345877
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Fri Oct 17 18:19:53 2008 -0300
+
+    Improve guile building.
+
+commit c358efbec7f3203e4a449021f83921a16e5edc3d
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Fri Oct 17 08:37:07 2008 -0300
+
+    Fix quoting in tools and add libtoolize.
+
+commit fd9b75781780cca99d85df7a5691a00e8fe9c417
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Fri Oct 17 08:36:21 2008 -0300
+
+    Fix gettext build.
+
+commit 3063526f0802444c19026d11f051a49d314e742c
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Fri Oct 17 08:35:58 2008 -0300
+
+    Ignore build files.
+
+commit d42f73ecef1e068fbe4105d7a45d3588e530d0ac
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Tue Oct 14 20:11:30 2008 -0300
+
+    Update recipes.
+
+commit 31d1d4706ceb4fdf8ccaed6bf2fc3440fd9e8e1d
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Tue Oct 14 20:05:31 2008 -0300
+
+    Initial recipes.
+
+commit 47642b7383195c62ece43be6aef872915c3a3d40
+Author: Cesar Strauss <cestrauss@gmail.com>
+Date:   Tue Oct 14 20:03:39 2008 -0300
+
+    Main scripts.

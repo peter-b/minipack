@@ -1,0 +1,29 @@
+=====
+1.1.0
+=====
+* Updated recipes:
+    Gtk+, Gd, Libgeda
+* New mpk sub-command:
+    shell - enter a shell with a pre-defined build environment.
+* Notable bug fix:
+    Fixed usage of an out-of-tree result directory.
+* Notable new feature:
+    Mpk can now be invoked from a sub-directory.
+* New platform tested for cross-compiling:
+    Cygwin - gcc 3.4.5
+=====
+1.0.0
+=====
+* First release (Yay!).
+* Application list:
+    gEDA/gaf, PCB
+* Libraries List:
+    Atk, Cairo, Expat, Fontconfig, Freetype, Gd, Glib, GMP, Gtk+,
+    Guile, Jpeg, Libiconv, Libpng, Mingw-libgnurx, Pango, Pixman,
+    Tiff, Zlib
+* Development Tools:
+    Gettext, Libtool
+* Mpk sub-commands:
+    build, help, source, unpack, version
+* Tested platforms for cross-compiling:
+    Ubuntu Hardy and Intrepid - gcc 4.2.1

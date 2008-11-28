@@ -1,0 +1,12 @@
+diff --git a/src/globals.c b/src/globals.c
+index c83c26c..7731c13 100644
+--- a/src/globals.c
++++ b/src/globals.c
+@@ -39,6 +39,5 @@ int quiet_mode=FALSE;
+ /* these are required by libgeda */
+ /* I have made most of these NULL because they aren't needed
+  * for gattrib -- no drawing is done. */
+-void (*select_func)() = s_toplevel_select_object;
+ void (*variable_set_func)() = i_vars_set;
+ 
+

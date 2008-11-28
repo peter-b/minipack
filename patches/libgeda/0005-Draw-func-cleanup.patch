@@ -1,0 +1,183 @@
+diff --git a/src/f_basic.c b/src/f_basic.c
+index 0127571..ac7f492 100644
+--- a/src/f_basic.c
++++ b/src/f_basic.c
+@@ -45,6 +45,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for arc draw function. */
++int (*load_newer_backup_func)() = NULL;
++
+ /*! \brief Get the autosave filename for a file
+  *  \par Function description
+  *  Returns the expected autosave filename for the \a filename passed.
+diff --git a/src/o_arc_basic.c b/src/o_arc_basic.c
+index 2da8ad5..fb34f8f 100644
+--- a/src/o_arc_basic.c
++++ b/src/o_arc_basic.c
+@@ -28,6 +28,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for arc draw function. */
++void (*arc_draw_func)() = NULL;
++
+ /*! \brief
+  *  \par Function Description
+  *  The function creates a new object of type arc and links it
+diff --git a/src/o_basic.c b/src/o_basic.c
+index d617165..f0d7fa5 100644
+--- a/src/o_basic.c
++++ b/src/o_basic.c
+@@ -33,6 +33,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for object selection function. */
++void (*select_func)() = NULL;
++
+ /* \todo 
+  * Lots of Gross code... needs lots of cleanup
+  * mainly readability issues
+diff --git a/src/o_box_basic.c b/src/o_box_basic.c
+index b4ca8d8..b61fa8c 100644
+--- a/src/o_box_basic.c
++++ b/src/o_box_basic.c
+@@ -49,6 +49,9 @@
+ #define GET_BOX_TOP(w)                          \
+ 		min((w)->start_y, (w)->last_y);
+ 
++/*! Default setting for draw function. */
++void (*box_draw_func)() = NULL;
++
+ /*! \brief Create a BOX and add it to a list.
+  *  \par Function Description
+  *  This function creates a new object representing a box.
+diff --git a/src/o_bus_basic.c b/src/o_bus_basic.c
+index ece05e0..3f92618 100644
+--- a/src/o_bus_basic.c
++++ b/src/o_bus_basic.c
+@@ -31,6 +31,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for bus draw function. */
++void (*bus_draw_func)() = NULL;
++
+ /* \brief
+  * \par Function Description
+  *
+diff --git a/src/o_circle_basic.c b/src/o_circle_basic.c
+index 43891b4..7a6f31e 100644
+--- a/src/o_circle_basic.c
++++ b/src/o_circle_basic.c
+@@ -27,6 +27,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for circle draw function. */
++void (*circle_draw_func)() = NULL;
++
+ /*! \brief
+  *  \par Function Description
+  *
+diff --git a/src/o_complex_basic.c b/src/o_complex_basic.c
+index 1839742..966a228 100644
+--- a/src/o_complex_basic.c
++++ b/src/o_complex_basic.c
+@@ -34,6 +34,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for complex draw function. */
++void (*complex_draw_func)() = NULL;
++
+ /*! \brief Return the bounds of the given object.
+  *  \par Given an object, calculate the bounds coordinates.
+  *  \param [in] toplevel The toplevel structure.
+diff --git a/src/o_line_basic.c b/src/o_line_basic.c
+index dde4956..c97bf3b 100644
+--- a/src/o_line_basic.c
++++ b/src/o_line_basic.c
+@@ -28,6 +28,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for line draw function. */
++void (*line_draw_func)() = NULL;
++
+ /*! \brief Create and add line OBJECT to list.
+  *  \par Function Description
+  *  This function creates a new object representing a line.
+diff --git a/src/o_net_basic.c b/src/o_net_basic.c
+index 6f62dce..caf49ac 100644
+--- a/src/o_net_basic.c
++++ b/src/o_net_basic.c
+@@ -28,6 +28,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for net draw function. */
++void (*net_draw_func)() = NULL;
++
+ /*! \todo Finish function documentation!!!
+  *  \brief
+  *  \par Function Description
+diff --git a/src/o_picture.c b/src/o_picture.c
+index a1b981b..faff205 100644
+--- a/src/o_picture.c
++++ b/src/o_picture.c
+@@ -40,6 +40,9 @@
+ 
+ #include "libgeda_priv.h"
+ 
++/*! Default setting for picture draw function. */
++void (*picture_draw_func)() = NULL;
++
+ /*! \brief Create picture OBJECT from character string.
+  *  \par Function Description
+  *  This function will get the description of a picture from the
+diff --git a/src/o_pin_basic.c b/src/o_pin_basic.c
+index f08584d..65b47ea 100644
+--- a/src/o_pin_basic.c
++++ b/src/o_pin_basic.c
+@@ -28,6 +28,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for pin draw function. */
++void (*pin_draw_func)() = NULL;
++
+ /*! \todo Finish function documentation!!!
+  *  \brief
+  *  \par Function Description
+diff --git a/src/o_text_basic.c b/src/o_text_basic.c
+index 7ff723f..f0d1124 100644
+--- a/src/o_text_basic.c
++++ b/src/o_text_basic.c
+@@ -35,6 +35,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for text draw function. */
++void (*text_draw_func)() = NULL;
++
+ #define WINONLY	1
+ #define BACKING 2
+ 
+diff --git a/src/s_log.c b/src/s_log.c
+index d28f3eb..1ff475a 100644
+--- a/src/s_log.c
++++ b/src/s_log.c
+@@ -46,6 +46,9 @@
+ #include <dmalloc.h>
+ #endif
+ 
++/*! Default setting for log update callback function. */
++void (*x_log_update_func)() = NULL;
++
+ #define CATCH_LOG_LEVELS (G_LOG_LEVEL_MASK ^ \
+                           (G_LOG_LEVEL_DEBUG | G_LOG_LEVEL_INFO))
+ #define PRINT_LOG_LEVELS (CATCH_LOG_LEVELS ^ \
+

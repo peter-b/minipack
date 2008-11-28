@@ -1,0 +1,49 @@
+diff --git a/src/globals.c b/src/globals.c
+index a11e365..7898f89 100644
+--- a/src/globals.c
++++ b/src/globals.c
+@@ -51,18 +51,7 @@ int do_logging = TRUE;
+ int logging_dest = LOG_WINDOW;
+ 
+ /* these are required by libgeda */
+-void (*arc_draw_func)()      = o_arc_draw;
+-void (*box_draw_func)()      = o_box_draw;
+-void (*picture_draw_func)()  = o_picture_draw;
+-void (*circle_draw_func)()   = o_circle_draw;
+-void (*complex_draw_func)()  = o_complex_draw;
+-void (*line_draw_func)()     = o_line_draw;
+-void (*net_draw_func)()      = o_net_draw;
+-void (*bus_draw_func)()      = o_bus_draw;
+-void (*text_draw_func)()     = o_text_draw;
+-void (*pin_draw_func)()      = o_pin_draw;
+ void (*select_func)()        = o_select_object; /* NEW SELECTION code */
+-int (*load_newer_backup_func)()  = x_fileselect_load_backup;
+ 
+ /* command line options */
+ int quiet_mode = FALSE;
+diff --git a/src/gschem.c b/src/gschem.c
+index 6d68bb4..80c6934 100644
+--- a/src/gschem.c
++++ b/src/gschem.c
+@@ -164,7 +164,20 @@ void main_prog(void *closure, int argc, char *argv[])
+   cwd = g_get_current_dir();
+   
+   libgeda_init();
+-  
++
++  /* Install various libgeda callbacks */
++  arc_draw_func = o_arc_draw;
++  box_draw_func = o_box_draw;
++  bus_draw_func = o_bus_draw;
++  circle_draw_func = o_circle_draw;
++  complex_draw_func = o_complex_draw;
++  line_draw_func = o_line_draw;
++  net_draw_func = o_net_draw;
++  picture_draw_func = o_picture_draw;
++  pin_draw_func = o_pin_draw;
++  text_draw_func = o_text_draw;
++  load_newer_backup_func = x_fileselect_load_backup;
++
+   /*! \todo Probably the file name shuold be defined elsewhere */
+   /* create log file right away even if logging is enabled */
+   filename = g_build_filename (cwd, "gschem.log", NULL);

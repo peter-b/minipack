@@ -1,0 +1,12 @@
+diff --git a/gschlas/globals.c b/gschlas/globals.c
+index 56f1756..74f9958 100644
+--- a/gschlas/globals.c
++++ b/gschlas/globals.c
+@@ -44,7 +44,6 @@ GdkColor black;
+ #endif
+ 
+ int logfile_fd=-1;
+-int do_logging=TRUE;
+ int logging_dest=LOG_WINDOW;
+ 
+ /* these are required by libgeda */

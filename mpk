@@ -61,6 +61,7 @@ test -f $topdir/minipack.conf && . $topdir/minipack.conf
 # Setup environment variables
 export PATH=$resultdir/bin:$PATH
 export ACLOCAL="aclocal -I $resultdir/share/aclocal"  
+export ACLOCAL_FLAGS="-I $resultdir/share/aclocal"
 export PKG_CONFIG_LIBDIR=$resultdir/lib/pkgconfig
 
 get_recipe_name()

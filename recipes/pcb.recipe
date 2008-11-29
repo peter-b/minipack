@@ -1,5 +1,5 @@
 name=pcb
-version=20080202
+version=20081128
 release=1
 origin=sf
  
@@ -12,7 +12,6 @@ export ac_cv_func_gdImagePng=yes
 
 src_prep()
 {
-  do_prep
   mkdir m4
   autoreconf -v
 }

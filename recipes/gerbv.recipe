@@ -1,0 +1,10 @@
+name=gerbv
+version=2.1.0
+release=1
+origin=sf
+
+src_prep()
+{
+  autoreconf -v
+}
+

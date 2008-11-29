@@ -35,6 +35,7 @@ geda-gsymcheck
 geda-utils
 geda-docs
 geda-examples
+gerbv
 "
 
 fail()

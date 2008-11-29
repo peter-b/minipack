@@ -10,4 +10,5 @@ configure_opt="
   --with-included-loaders
   --with-included-immodules
   --disable-rebuilds
+  CXX=$host-g++
 "

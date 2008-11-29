@@ -1,5 +1,5 @@
 name=cairo
-version=1.8.0
+version=1.8.4
 release=1
 download=http://www.cairographics.org/releases
 configure_opt=--without-x

@@ -1,5 +1,5 @@
 name=guile
-version=1.8.5
+version=1.8.6
 release=1
 origin=gnu
 configure_opt="--disable-error-on-warning"

@@ -1,7 +1,7 @@
 name=geda-gnetlist
-version=1.4.1
+version=1.4.3
 release=1
-download=http://geda.seul.org/release/v1.4/1.4.1
+download=http://geda.seul.org/release/v1.4/$version
 
 src_prep()
 {

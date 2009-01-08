@@ -3,6 +3,8 @@ version=2.1.0
 release=1
 origin=sf
 
+configure_opt="--disable-update-desktop-database"
+
 src_prep()
 {
   autoreconf -v

@@ -1,7 +1,7 @@
 name=glib
-version=2.18.3
+version=2.19.4
 release=1
-download=http://ftp.gnome.org/pub/gnome/sources/glib/2.18
+download=http://ftp.gnome.org/pub/gnome/sources/glib/2.19
 
 configure_opt="
   CXX=$host-g++

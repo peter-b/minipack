@@ -26,15 +26,7 @@ mingw-libgnurx
 guile
 gd
 pcb
-libgeda
-geda-symbols
-geda-gschem
-geda-gnetlist
-geda-gattrib
-geda-gsymcheck
-geda-utils
-geda-docs
-geda-examples
+geda-gaf
 gerbv
 "
 

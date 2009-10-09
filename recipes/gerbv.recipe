@@ -4,3 +4,9 @@ release=1
 origin=sf
 
 configure_opt="--disable-update-desktop-database"
+
+# update to newer libtool
+src_prep()
+{
+  autoreconf -ivf
+}

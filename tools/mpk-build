@@ -88,18 +88,22 @@ do_install()
 fail()
 {
   echo
-  echo "============="
-  echo "Build failed."
-  echo "============="
+  echo "================="
+  echo "$pkg:"
+  echo "  Build failed."
+  echo "================="
+  echo
   exit 1
 }
 
 success()
 {
   echo
-  echo "================"
-  echo "Build succeeded."
-  echo "================"
+  echo "===================="
+  echo "$pkg:"
+  echo "  Build succeeded."
+  echo "===================="
+  echo
 }
 
 if [ -z "$1" ]; then

@@ -39,6 +39,8 @@ unpack_source()
 
   mkdir -p $buildroot
   cd $buildroot
+  
+  echo "Unpacking $pkg..."
 
   case $source_package_type in
     tar.*)

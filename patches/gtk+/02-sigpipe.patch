@@ -1,0 +1,22 @@
+From 425b6520037b006adae590d8436d680fbffe9352 Mon Sep 17 00:00:00 2001
+From: Tor Lillqvist <tml@iki.fi>
+Date: Tue, 06 Oct 2009 11:53:22 +0000
+Subject: Don't ignore SIGPIPE unless it exists
+
+---
+diff --git a/gtk/gtkmain.c b/gtk/gtkmain.c
+index 2bbc96d..645da6f 100644
+--- a/gtk/gtkmain.c
++++ b/gtk/gtkmain.c
+@@ -686,7 +686,9 @@ do_post_parse_initialization (int    *argc,
+ 
+   gettext_initialization ();
+ 
++#ifdef SIGPIPE
+   signal (SIGPIPE, SIG_IGN);
++#endif
+ 
+   if (g_fatal_warnings)
+     {
+--
+cgit v0.8.2

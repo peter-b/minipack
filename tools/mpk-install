@@ -1,0 +1,63 @@
+# mpk-install - Install packages.
+# Copyright (C) 2009 Cesar Strauss
+#
+# This file is part of Minipack - an automated build tool.
+#
+# Minipack is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Minipack is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Minipack. If not, see <http://www.gnu.org/licenses/>.
+
+install()
+{
+  : ${top_srcdir:=$name-$version}
+
+  pkg_builddir=$builddir/$name-$version-$release/$top_srcdir
+
+  if [ ! -d $pkg_builddir ]; then
+    echo >&2 "$(basename $0) install: Could not find the build location of $pkg."
+    fail
+  fi
+  
+  cd $pkg_builddir
+  
+  if [ ! -f Makefile ]; then
+    echo >&2 "$(basename $0) install: $pkg not build yet."
+  fi
+  
+  (make install > ../logs/install.log) || fail
+}
+
+fail()
+{
+  echo
+  echo "================="
+  echo "Install failed."
+  echo "================="
+  exit 1
+}
+
+if [ -z "$1" ]; then
+  echo "Usage: $(basename $0) install package-name"
+  exit 1
+fi
+pkg=$1
+
+if [ -z "$pkg" ]; then
+  echo "Usage: $(basename $0) install package-name ..."
+  exit 1
+fi
+
+recipe=$(get_recipe_name $pkg) || exit 1
+
+. $recipe
+
+install

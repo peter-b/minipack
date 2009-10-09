@@ -1,4 +1,4 @@
 name=atk
-version=1.25.2
+version=1.28.0
 release=1
-download=http://ftp.gnome.org/pub/gnome/sources/atk/1.25
+download=http://ftp.gnome.org/pub/gnome/sources/atk/1.28

@@ -55,11 +55,15 @@ fi
 builddir=$topdir/build
 resultdir=$topdir/result
 sourcedir=$topdir/sources
+local_tooldir=$resultdir/lib/mpk/tools
+
+# Export resultdir in case we need to call our newly built tools.
+export resultdir
 
 test -f $topdir/minipack.conf && . $topdir/minipack.conf
 
 # Setup environment variables
-export PATH=$resultdir/bin:$PATH
+export PATH=$local_tooldir:$PATH
 export ACLOCAL="aclocal -I $resultdir/share/aclocal"  
 export ACLOCAL_FLAGS="-I $resultdir/share/aclocal"
 export PKG_CONFIG_LIBDIR=$resultdir/lib/pkgconfig

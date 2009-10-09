@@ -18,6 +18,12 @@ src_prep()
 src_install()
 {
   do_install
-  ln -f $resultdir/lib/libgd.dll.a $resultdir/lib/bgd.lib
+  
+  case "$host" in
+    *mingw*) ln -f $resultdir/lib/libgd.dll.a $resultdir/lib/bgd.lib ;;
+  esac
+  
+  mkdir -p $local_tooldir
+  cp $tooldir/tool.template $local_tooldir/gdlib-config
 }
 

@@ -68,7 +68,7 @@ do_configure()
 
   echo "Configuring $pkg..."
   mkdir -p ../logs
-  ./configure $pkg_configure_opt > ../logs/configure.log
+  echo "$pkg_configure_opt" | xargs ./configure > ../logs/configure.log
 }
 
 do_compile()

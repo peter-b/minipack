@@ -80,7 +80,7 @@ get_recipe_name()
 
 setup_configure_options()
 {
-  pkg_configure_opt=$configure_opt
+  pkg_configure_opt="$def_configure_opt $configure_opt"
   pkg_configure_opt="$pkg_configure_opt --prefix=$resultdir"
 
   if [ -n "$host" ]; then
@@ -90,9 +90,22 @@ setup_configure_options()
     pkg_configure_opt="$pkg_configure_opt --build=$build"
   fi
 
-  if [ -z "$configure_no_more_flags" ]; then
-    pkg_configure_opt="$pkg_configure_opt CPPFLAGS=-I$resultdir/include"
-    pkg_configure_opt="$pkg_configure_opt LDFLAGS=-L$resultdir/lib"
+  # Local compiler/linker search path
+  CPPFLAGS="$CPPFLAGS -I$resultdir/include"
+  LDFLAGS="$LDFLAGS -L$resultdir/lib"
+  
+  test -n "$configure_no_more_flags" && return
+  
+  # Add search paths to the configure line.
+  pkg_configure_opt="$pkg_configure_opt CPPFLAGS=\"$CPPFLAGS\""
+  pkg_configure_opt="$pkg_configure_opt LDFLAGS=\"$LDFLAGS\""
+    
+  # Add extra flags to the configure line, if present.
+  if [ -n "$CFLAGS" ]; then
+    pkg_configure_opt="$pkg_configure_opt CFLAGS=\"$CFLAGS\""
+  fi
+  if [ -n "$CXXFLAGS" ]; then
+    pkg_configure_opt="$pkg_configure_opt CXXFLAGS=\"$CXXFLAGS\""
   fi
 }
 

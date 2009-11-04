@@ -43,6 +43,12 @@ topdir=$topdir
 builddir=$builddir
 resultdir=$resultdir
 
+Most software can be built like this:
+
+   echo \"\$mpk_opt\" | xargs ./configure
+   make
+   make install
+
 [To exit the Minipack shell, type 'exit'].
 "
 

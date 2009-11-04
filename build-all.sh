@@ -1,4 +1,5 @@
 NEVERBUILD="
+fontconfig
 "
 
 NOBUILD="
@@ -13,7 +14,6 @@ libpng
 tiff
 expat
 freetype
-fontconfig
 pixman
 glib
 atk

@@ -1,6 +1,6 @@
 name=guile
 version=1.8.7
-release=1
+release=2
 origin=gnu
 configure_opt="--disable-error-on-warning"
 export ac_cv_sys_restartable_syscalls=no

@@ -1,6 +1,6 @@
 name=geda-gaf
 version=1.6.0
-release=3
+release=4
 download=http://geda.seul.org/release/v1.6/$version
 configure_opt=--disable-update-xdg-database
 src_prep()

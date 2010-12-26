@@ -15,6 +15,7 @@ tiff
 expat
 freetype
 pixman
+pkgconfig-wrapper
 glib
 atk
 cairo

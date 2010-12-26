@@ -1,0 +1,31 @@
+name=pkgconfig-wrapper
+version=1.0
+release=1
+
+src_get_source()
+{
+  :
+}
+
+src_unpack_source()
+{
+  :
+}
+
+src_build_source()
+{
+  echo "Checking for pkg-config..."
+  if ! which pkg-config; then
+    echo "pkg-config not found. Please install it."
+    fail
+  fi
+  if [ -n "$host" ]; then
+    mkdir -p $local_tooldir
+    wrapper=$local_tooldir/$host-pkg-config
+    echo '#! /bin/sh
+pkg-config "$@"
+'  > $wrapper
+    chmod +x $wrapper
+  fi
+  success
+}

@@ -18,6 +18,16 @@
 
 build_source()
 {
+  src_build_source
+}
+
+src_build_source()
+{
+  do_build_source
+}
+
+do_build_source()
+{
   : ${top_srcdir:=$name-$version}
 
   pkg_builddir=$builddir/$name-$version-$release/$top_srcdir

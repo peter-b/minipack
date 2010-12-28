@@ -1,12 +1,13 @@
 name=libpng
-version=1.2.40
+version=1.4.5
 release=1
 origin=sf
+source_package_type=tar.xz
 
 src_install()
 {
   do_install
   mkdir -p $local_tooldir
   cp $tooldir/tool.template $local_tooldir/libpng-config
-  cp $tooldir/tool.template $local_tooldir/libpng12-config
+  cp $tooldir/tool.template $local_tooldir/libpng14-config
 }

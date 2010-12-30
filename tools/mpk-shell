@@ -52,7 +52,7 @@ Most software can be built like this:
 [To exit the Minipack shell, type 'exit'].
 "
 
-$SHELL --login -i
+$SHELL -i
 
 echo "
 ========================

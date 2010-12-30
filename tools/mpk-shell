@@ -43,6 +43,8 @@ topdir=$topdir
 builddir=$builddir
 resultdir=$resultdir
 
+PATH=$PATH
+
 Most software can be built like this:
 
    echo \"\$mpk_opt\" | xargs ./configure

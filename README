@@ -49,4 +49,28 @@ A cache of downloaded sources is kept in the 'sources' directory.
 To add more recipes to minipack, place the recipe in the 'recipes' directory
 and place the patches in a subdirectory of the 'patches' directory.
 
+
+========================================
+Building development versions of packages
+========================================
+
+Suppose you want to build the development version of a package, not the
+version shipped as a minipack recipe. The procedure is very similar as when
+building a native (non-cross) development version:
+
+1) Download the development source code.
+  You can download a snapshot, if available, or directly from source control
+  (cvs, svn, git, etc.)
+2) Enter a minipack shell - mpk shell <package>
+  This will initialize some variables useful for passing to configure and
+  make, like prefix, host, build and compiler flags.
+3) Generate the configure script, if needed.
+  Usually, you run a script named autogen.sh.
+4) Build the package.
+  Usually, you run configure and make, like so:
+  echo "$mpk_opt" | xargs ./configure
+  make
+5) Patch if necessary, run make again.
+6) Run make install.
+
 Have fun!

@@ -34,10 +34,15 @@ version of pkg-config, others need the autotools and/or intltool as well.
 =======
 
 The main (and only) tool of minipack is called mpk:
-* mpk build <package>  - download, unpack, and build a package.
-* mpk unpack <package> - download and unpack a package
-* mpk source <package> - download a source package
-* mpk shell [package]  - enter a shell with a pre-defined build environment
+* mpk build <package>   - Download, unpack, and build a package.
+* mpk unpack <package>  - Download and unpack a package.
+* mpk source <package>  - Download a source package.
+* mpk remove <package>  - Remove an installed package.
+* mpk install <package> - Install a previously built package.
+* mpk clean <package>   - Clean the build directory of a package.
+* mpk shell [package]   - Enters a shell with a pre-defined environment.
+* mpk --version         - Show the current Minipack version.
+* mpk --help            - Show this screen.
 
 A cache of downloaded sources is kept in the 'sources' directory.
 

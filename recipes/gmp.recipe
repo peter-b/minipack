@@ -1,5 +1,5 @@
 name=gmp
-version=4.2.4
+version=4.3.2
 release=1
 origin=gnu
 configure_opt='--disable-static --enable-shared'

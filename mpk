@@ -30,7 +30,7 @@ tooldir=$prefix/tools
 recipedir=$prefix/recipes
 patchdir=$prefix/patches
 
-MPK_VERSION=1.1.0
+MPK_VERSION=1.2
 
 export PATH=$tooldir:$PATH
 

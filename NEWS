@@ -1,3 +1,23 @@
+===
+1.2
+===
+* Updated recipes:
+    Atk, Cairo, Fontconfig, Freetype, Gd, Geda-gaf, Gettext, Glib, Gtk+,
+    Guile, Jpeg, Libiconv, Libgeda, Libpng, Libtool, Pango, Pcb, Pixman,
+    Tiff, Zlib
+* New recipe:
+    Gerbv
+* Notable new features:
+    - Prints-out the name of the package currently being built.
+    - Include instructions for builind the development version of packages.
+* New mpk sub-commands:
+    clean - remove the working directory, in preparation for a rebuild.
+    install, remove - simulate a package manager.
+* Notable bug fix:
+    Do not use a login shell for mpk shell.
+* New platform tested for cross-compiling:
+    Gentoo
+
 =====
 1.1.0
 =====

@@ -1,11 +1,22 @@
 name=pcb
-version=20091103
+version=20100929
 release=1
 origin=sf
- 
-configure_opt="--disable-update-desktop-database --disable-update-mime-database"
+
+configure_opt="
+  --disable-update-desktop-database
+  --disable-update-mime-database
+  --disable-dbus
+"
 
 # configure-time test fails because of stdcall signature
 export ac_cv_func_gdImageGif=yes
 export ac_cv_func_gdImageJpeg=yes
 export ac_cv_func_gdImagePng=yes
+
+src_prep()
+{
+  aclocal $ACLOCAL_FLAGS &&
+  autoheader &&
+  autoconf
+}

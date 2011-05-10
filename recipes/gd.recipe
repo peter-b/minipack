@@ -1,7 +1,8 @@
 name=gd
 version=2.0.35
 release=1
-download=http://www.libgd.org/releases
+download=ftp://ftp.slackware.com/pub/slackware/slackware-13.37/source/l/gd
+source_package_type=tar.bz2
 
 configure_opt="
   --disable-static

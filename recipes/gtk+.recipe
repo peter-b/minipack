@@ -7,6 +7,7 @@ download=http://ftp.gnome.org/pub/gnome/sources/$name/$major
 
 configure_opt="
   --without-libjasper
+  --disable-cups
   --with-included-loaders
   --with-included-immodules
 "

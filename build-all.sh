@@ -20,6 +20,7 @@ glib
 atk
 cairo
 pango
+gdk-pixbuf
 gtk+
 libtool
 gmp

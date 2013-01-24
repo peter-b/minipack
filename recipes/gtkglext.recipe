@@ -1,0 +1,16 @@
+name=gtkglext
+major=1.2
+minor=0
+release=1
+version=$major.$minor
+download=http://ftp.gnome.org/pub/gnome/sources/$name/$major
+
+configure_opt="
+--with-gdktarget=win32
+"
+
+src_prep()
+{
+  chmod ugo+x bootstrap
+  ./bootstrap
+}

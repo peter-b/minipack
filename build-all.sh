@@ -27,6 +27,7 @@ gmp
 mingw-libgnurx
 guile
 gd
+gtkglext
 pcb
 geda-gaf
 gerbv

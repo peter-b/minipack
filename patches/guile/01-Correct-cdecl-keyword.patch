@@ -1,0 +1,30 @@
+diff -Naur guile-2.0.9-orig/lib/msvc-inval.c guile-2.0.9/lib/msvc-inval.c
+--- guile-2.0.9-orig/lib/msvc-inval.c	2013-02-18 20:37:43.000000000 +0000
++++ guile-2.0.9/lib/msvc-inval.c	2014-03-17 20:26:23.612222298 +0000
+@@ -28,7 +28,7 @@
+ 
+ # if MSVC_INVALID_PARAMETER_HANDLING == DEFAULT_HANDLING
+ 
+-static void cdecl
++static void __cdecl
+ gl_msvc_invalid_parameter_handler (const wchar_t *expression,
+                                    const wchar_t *function,
+                                    const wchar_t *file,
+@@ -45,7 +45,7 @@
+ 
+ #  if defined _MSC_VER
+ 
+-static void cdecl
++static void __cdecl
+ gl_msvc_invalid_parameter_handler (const wchar_t *expression,
+                                    const wchar_t *function,
+                                    const wchar_t *file,
+@@ -94,7 +94,7 @@
+     }
+ }
+ 
+-static void cdecl
++static void __cdecl
+ gl_msvc_invalid_parameter_handler (const wchar_t *expression,
+                                    const wchar_t *function,
+                                    const wchar_t *file,

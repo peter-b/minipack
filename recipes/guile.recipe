@@ -1,11 +1,10 @@
 name=guile
-version=1.8.7
-release=2
+version=2.0.9
+release=1
 origin=gnu
-configure_opt="--disable-error-on-warning"
-export ac_cv_sys_restartable_syscalls=no
+configure_opt=--without-threads
 
 src_prep()
 {
-  autoreconf -ivf
+  :
 }

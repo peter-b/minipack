@@ -1,0 +1,5 @@
+name=gc
+version=7.4.0
+release=1
+download=http://launchpad.net/libgc/main/$version/+download/
+configure_opt=--disable-threads

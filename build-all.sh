@@ -6,8 +6,16 @@ NOBUILD="
 "
 
 BUILD="
+libtool
+gmp
 libiconv
+libunistring
 gettext
+libatomic_ops
+gc
+libffi
+guile
+
 jpeg
 zlib
 libpng
@@ -22,14 +30,12 @@ cairo
 pango
 gdk-pixbuf
 gtk+
-libtool
-gmp
+geda-gaf
+
 mingw-libgnurx
-guile
 gd
 gtkglext
 pcb
-geda-gaf
 gerbv
 "
 

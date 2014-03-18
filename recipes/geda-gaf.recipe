@@ -1,9 +1,14 @@
 name=geda-gaf
-version=1.9.0
+version=1.9.1
 release=1
 download=http://ftp.geda-project.org/geda-gaf/unstable/v1.9/$version
-configure_opt=--disable-update-xdg-database
+configure_opt=--disable-update-xdg-database GIT=false
 src_prep()
 {
-  autoreconf -ivf
+  ./autogen.sh
+}
+src_configure()
+{
+  export GIT=false
+  do_configure
 }

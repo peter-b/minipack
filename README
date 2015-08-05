@@ -29,6 +29,25 @@ The build-all.sh script can be used to build all packages in one run. Edit the
 BUILD list to select only a subset. Beware, some recipes require a native
 version of pkg-config, others need the autotools and/or intltool as well.
 
+===============================
+Using Makefile for installation
+===============================
+
+Some packages require installation of additional MinGW DLLs for work. Those
+libraries are:
+  libgcc_s_sjlj-1.dll
+
+To install them, do as follows:
+  cd mingw-libs/
+  ln -s /usr/lib/gcc/i686-w64-mingw32/4.9-win32/libgcc_s_sjlj-1.dll
+  make install prefix=/special
+
+The path to the MinGW DLL's on your system may differ.
+
+Use your own prefix or don't use it at all. In the latter case the
+built programs will be installed into the ./install directory. (You can make
+it symlink to an actual installation directory.)
+
 =======
   mpk
 =======

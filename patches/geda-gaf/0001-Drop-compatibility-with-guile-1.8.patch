@@ -1,0 +1,651 @@
+From bd09f839b740e2231fd818f44599a029eff52c8f Mon Sep 17 00:00:00 2001
+From: Vladimir Zhbanov <vzhbanov@gmail.com>
+Date: Mon, 20 Apr 2015 10:19:10 +0300
+Subject: [PATCH 1/7] Drop compatibility with guile 1.8
+
+Revert "build-sys: Test for scm_{to,from}_utf8_string()."
+This reverts commit 3dbc8982a4e598a3435dfa7857c48c1b64fbe721.
+and facilitates building of geda-gaf in MinGW with guile 2.0.
+---
+ gattrib/src/g_rc.c                    |  1 -
+ gnetlist/src/g_netlist.c              |  1 -
+ gnetlist/src/g_rc.c                   |  1 -
+ gnetlist/src/gnetlist.c               |  1 -
+ gnetlist/src/parsecmd.c               |  1 -
+ gnetlist/src/s_net.c                  |  1 -
+ gnetlist/src/s_rename.c               |  1 -
+ gnetlist/src/s_traverse.c             |  1 -
+ gnetlist/src/vams_misc.c              |  1 -
+ gschem/src/g_action.c                 |  1 -
+ gschem/src/g_attrib.c                 |  1 -
+ gschem/src/g_builtins.c               |  1 -
+ gschem/src/g_funcs.c                  |  1 -
+ gschem/src/g_hook.c                   |  1 -
+ gschem/src/g_keys.c                   |  1 -
+ gschem/src/g_rc.c                     |  1 -
+ gschem/src/g_util.c                   |  1 -
+ gschem/src/gschem.c                   |  1 -
+ gschem/src/gschem_integer_combo_box.c |  1 -
+ gschem/src/gschem_options_dialog.c    |  1 -
+ gschem/src/gschemhotkeystore.c        |  1 -
+ gschem/src/o_complex.c                |  1 -
+ gschem/src/parsecmd.c                 |  1 -
+ gschem/src/x_aligncb.c                |  1 -
+ gschem/src/x_colorcb.c                |  1 -
+ gschem/src/x_dialog.c                 |  1 -
+ gschem/src/x_fstylecb.c               |  1 -
+ gschem/src/x_integerls.c              |  1 -
+ gschem/src/x_linecapcb.c              |  1 -
+ gschem/src/x_linetypecb.c             |  1 -
+ gschem/src/x_menus.c                  |  1 -
+ gschem/src/x_rotatecb.c               |  1 -
+ gschem/src/x_window.c                 |  1 -
+ gsymcheck/src/g_rc.c                  |  1 -
+ libgeda/include/libgedaguile_priv.h   |  1 -
+ libgeda/src/g_basic.c                 |  1 -
+ libgeda/src/g_rc.c                    |  1 -
+ libgeda/src/g_register.c              |  1 -
+ libgeda/src/o_attrib.c                |  1 -
+ libgeda/src/o_text_basic.c            |  1 -
+ libgeda/src/s_clib.c                  |  1 -
+ libgeda/src/s_color.c                 |  1 -
+ m4/geda-guile.m4                      | 21 -------------------
+ missing.h                             | 39 -----------------------------------
+ utils/gschlas/g_rc.c                  |  1 -
+ 45 files changed, 103 deletions(-)
+ delete mode 100644 missing.h
+
+diff --git a/gattrib/src/g_rc.c b/gattrib/src/g_rc.c
+index 95a3068..1901925 100644
+--- a/gattrib/src/g_rc.c
++++ b/gattrib/src/g_rc.c
+@@ -25,7 +25,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ #include <version.h>
+ 
+ #include <stdio.h>
+diff --git a/gnetlist/src/g_netlist.c b/gnetlist/src/g_netlist.c
+index 3b751f7..dfbfa3a 100644
+--- a/gnetlist/src/g_netlist.c
++++ b/gnetlist/src/g_netlist.c
+@@ -19,7 +19,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h> 
+ #ifdef HAVE_STRING_H
+diff --git a/gnetlist/src/g_rc.c b/gnetlist/src/g_rc.c
+index 5a8e9f5..cf4157c 100644
+--- a/gnetlist/src/g_rc.c
++++ b/gnetlist/src/g_rc.c
+@@ -19,7 +19,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ #include <version.h>
+ 
+ #include <stdio.h>
+diff --git a/gnetlist/src/gnetlist.c b/gnetlist/src/gnetlist.c
+index 5f1333f..691a6f5 100644
+--- a/gnetlist/src/gnetlist.c
++++ b/gnetlist/src/gnetlist.c
+@@ -21,7 +21,6 @@
+ #include <config.h>
+ #include <locale.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <sys/param.h>
+diff --git a/gnetlist/src/parsecmd.c b/gnetlist/src/parsecmd.c
+index 1aaa661..993c207 100644
+--- a/gnetlist/src/parsecmd.c
++++ b/gnetlist/src/parsecmd.c
+@@ -20,7 +20,6 @@
+ 
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STRING_H
+diff --git a/gnetlist/src/s_net.c b/gnetlist/src/s_net.c
+index 06a19b0..4c8c7d1 100644
+--- a/gnetlist/src/s_net.c
++++ b/gnetlist/src/s_net.c
+@@ -19,7 +19,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <ctype.h>
+diff --git a/gnetlist/src/s_rename.c b/gnetlist/src/s_rename.c
+index c50636a..a75d770 100644
+--- a/gnetlist/src/s_rename.c
++++ b/gnetlist/src/s_rename.c
+@@ -25,7 +25,6 @@
+   */
+   
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <ctype.h>
+diff --git a/gnetlist/src/s_traverse.c b/gnetlist/src/s_traverse.c
+index 0e0e5eb..308179c 100644
+--- a/gnetlist/src/s_traverse.c
++++ b/gnetlist/src/s_traverse.c
+@@ -19,7 +19,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STRING_H
+diff --git a/gnetlist/src/vams_misc.c b/gnetlist/src/vams_misc.c
+index aec3611..7a06f41 100644
+--- a/gnetlist/src/vams_misc.c
++++ b/gnetlist/src/vams_misc.c
+@@ -20,7 +20,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STRING_H
+diff --git a/gschem/src/g_action.c b/gschem/src/g_action.c
+index 946cbe0..d6be5ad 100644
+--- a/gschem/src/g_action.c
++++ b/gschem/src/g_action.c
+@@ -22,7 +22,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include "gschem.h"
+ 
+diff --git a/gschem/src/g_attrib.c b/gschem/src/g_attrib.c
+index 1f1716e..9d3f9a3 100644
+--- a/gschem/src/g_attrib.c
++++ b/gschem/src/g_attrib.c
+@@ -24,7 +24,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include "gschem.h"
+ 
+diff --git a/gschem/src/g_builtins.c b/gschem/src/g_builtins.c
+index 1937ea1..995f758 100644
+--- a/gschem/src/g_builtins.c
++++ b/gschem/src/g_builtins.c
+@@ -22,7 +22,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include "gschem.h"
+ 
+diff --git a/gschem/src/g_funcs.c b/gschem/src/g_funcs.c
+index 01cf786..4280a56 100644
+--- a/gschem/src/g_funcs.c
++++ b/gschem/src/g_funcs.c
+@@ -18,7 +18,6 @@
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+  */
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <sys/stat.h>
+diff --git a/gschem/src/g_hook.c b/gschem/src/g_hook.c
+index 59048fe..9d8d1ef 100644
+--- a/gschem/src/g_hook.c
++++ b/gschem/src/g_hook.c
+@@ -18,7 +18,6 @@
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+  */
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STRING_H
+diff --git a/gschem/src/g_keys.c b/gschem/src/g_keys.c
+index 34a44b6..c770676 100644
+--- a/gschem/src/g_keys.c
++++ b/gschem/src/g_keys.c
+@@ -18,7 +18,6 @@
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+  */
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <sys/stat.h>
+diff --git a/gschem/src/g_rc.c b/gschem/src/g_rc.c
+index 9a9437f..d55f7d5 100644
+--- a/gschem/src/g_rc.c
++++ b/gschem/src/g_rc.c
+@@ -18,7 +18,6 @@
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+  */
+ #include <config.h>
+-#include <missing.h>
+ #include <version.h>
+ 
+ #include <stdio.h>
+diff --git a/gschem/src/g_util.c b/gschem/src/g_util.c
+index 19b0567..acf8568 100644
+--- a/gschem/src/g_util.c
++++ b/gschem/src/g_util.c
+@@ -22,7 +22,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include "gschem.h"
+ 
+diff --git a/gschem/src/gschem.c b/gschem/src/gschem.c
+index 331690c..e50e5f4 100644
+--- a/gschem/src/gschem.c
++++ b/gschem/src/gschem.c
+@@ -19,7 +19,6 @@
+  */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STRING_H
+diff --git a/gschem/src/gschem_integer_combo_box.c b/gschem/src/gschem_integer_combo_box.c
+index 48ba39b..235beee 100644
+--- a/gschem/src/gschem_integer_combo_box.c
++++ b/gschem/src/gschem_integer_combo_box.c
+@@ -26,7 +26,6 @@
+  */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #ifdef HAVE_ERRNO_H
+ #include <errno.h>
+diff --git a/gschem/src/gschem_options_dialog.c b/gschem/src/gschem_options_dialog.c
+index ddd51a4..7aebbf1 100644
+--- a/gschem/src/gschem_options_dialog.c
++++ b/gschem/src/gschem_options_dialog.c
+@@ -20,7 +20,6 @@
+ 
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STDLIB_H
+diff --git a/gschem/src/gschemhotkeystore.c b/gschem/src/gschemhotkeystore.c
+index 8bd0637..f416c61 100644
+--- a/gschem/src/gschemhotkeystore.c
++++ b/gschem/src/gschemhotkeystore.c
+@@ -19,7 +19,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ #include "gschem.h"
+ 
+ enum {
+diff --git a/gschem/src/o_complex.c b/gschem/src/o_complex.c
+index 9ee9f86..bb2e230 100644
+--- a/gschem/src/o_complex.c
++++ b/gschem/src/o_complex.c
+@@ -26,7 +26,6 @@
+ #endif
+ 
+ #include "gschem.h"
+-#include <missing.h>
+ 
+ /*! \todo Finish function documentation!!!
+  *  \brief
+diff --git a/gschem/src/parsecmd.c b/gschem/src/parsecmd.c
+index dbe85f6..b81f2e2 100644
+--- a/gschem/src/parsecmd.c
++++ b/gschem/src/parsecmd.c
+@@ -19,7 +19,6 @@
+  */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <ctype.h>
+diff --git a/gschem/src/x_aligncb.c b/gschem/src/x_aligncb.c
+index ee3b878..953936f 100644
+--- a/gschem/src/x_aligncb.c
++++ b/gschem/src/x_aligncb.c
+@@ -23,7 +23,6 @@
+  */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STDLIB_H
+diff --git a/gschem/src/x_colorcb.c b/gschem/src/x_colorcb.c
+index d1d6f93..7786d25 100644
+--- a/gschem/src/x_colorcb.c
++++ b/gschem/src/x_colorcb.c
+@@ -23,7 +23,6 @@
+  */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STDLIB_H
+diff --git a/gschem/src/x_dialog.c b/gschem/src/x_dialog.c
+index 930f90d..11d1870 100644
+--- a/gschem/src/x_dialog.c
++++ b/gschem/src/x_dialog.c
+@@ -20,7 +20,6 @@
+ /*! \todo STILL NEED to clean up line lengths in aa and tr */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STDLIB_H
+diff --git a/gschem/src/x_fstylecb.c b/gschem/src/x_fstylecb.c
+index f5daa22..5471869 100644
+--- a/gschem/src/x_fstylecb.c
++++ b/gschem/src/x_fstylecb.c
+@@ -23,7 +23,6 @@
+  */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STDLIB_H
+diff --git a/gschem/src/x_integerls.c b/gschem/src/x_integerls.c
+index 0b0c4c0..a3ad766 100644
+--- a/gschem/src/x_integerls.c
++++ b/gschem/src/x_integerls.c
+@@ -23,7 +23,6 @@
+  */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #ifdef HAVE_ERRNO_H
+ #include <errno.h>
+diff --git a/gschem/src/x_linecapcb.c b/gschem/src/x_linecapcb.c
+index 0b6e81d..c3806ee 100644
+--- a/gschem/src/x_linecapcb.c
++++ b/gschem/src/x_linecapcb.c
+@@ -23,7 +23,6 @@
+  */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STDLIB_H
+diff --git a/gschem/src/x_linetypecb.c b/gschem/src/x_linetypecb.c
+index 21e7a25..8cac556 100644
+--- a/gschem/src/x_linetypecb.c
++++ b/gschem/src/x_linetypecb.c
+@@ -23,7 +23,6 @@
+  */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STDLIB_H
+diff --git a/gschem/src/x_menus.c b/gschem/src/x_menus.c
+index 8a0e3d1..09b3de9 100644
+--- a/gschem/src/x_menus.c
++++ b/gschem/src/x_menus.c
+@@ -18,7 +18,6 @@
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+  */
+ #include "config.h"
+-#include <missing.h>
+ 
+ #ifdef HAVE_STRING_H
+ #include <string.h>
+diff --git a/gschem/src/x_rotatecb.c b/gschem/src/x_rotatecb.c
+index 22574d1..3fc4101 100644
+--- a/gschem/src/x_rotatecb.c
++++ b/gschem/src/x_rotatecb.c
+@@ -23,7 +23,6 @@
+  */
+ #include <config.h>
+ #include <version.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STDLIB_H
+diff --git a/gschem/src/x_window.c b/gschem/src/x_window.c
+index 899e760..4b9bf22 100644
+--- a/gschem/src/x_window.c
++++ b/gschem/src/x_window.c
+@@ -18,7 +18,6 @@
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+  */
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ 
+diff --git a/gsymcheck/src/g_rc.c b/gsymcheck/src/g_rc.c
+index 0524a6e..227d221 100644
+--- a/gsymcheck/src/g_rc.c
++++ b/gsymcheck/src/g_rc.c
+@@ -20,7 +20,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ #include <version.h>
+ 
+ #include <stdio.h>
+diff --git a/libgeda/include/libgedaguile_priv.h b/libgeda/include/libgedaguile_priv.h
+index cc528dd..765a488 100644
+--- a/libgeda/include/libgedaguile_priv.h
++++ b/libgeda/include/libgedaguile_priv.h
+@@ -83,7 +83,6 @@
+  * by Scheme API source files.
+  */
+ 
+-#include <missing.h>
+ #include <libgeda/libgedaguile.h>
+ 
+ void edascm_init_smob ();
+diff --git a/libgeda/src/g_basic.c b/libgeda/src/g_basic.c
+index b0eb0df..1203783 100644
+--- a/libgeda/src/g_basic.c
++++ b/libgeda/src/g_basic.c
+@@ -18,7 +18,6 @@
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+  */
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <sys/stat.h>
+diff --git a/libgeda/src/g_rc.c b/libgeda/src/g_rc.c
+index 7dde7c3..2082e4c 100644
+--- a/libgeda/src/g_rc.c
++++ b/libgeda/src/g_rc.c
+@@ -25,7 +25,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <errno.h>
+ #include <stdio.h>
+diff --git a/libgeda/src/g_register.c b/libgeda/src/g_register.c
+index fa4f4df..9a6cc13 100644
+--- a/libgeda/src/g_register.c
++++ b/libgeda/src/g_register.c
+@@ -19,7 +19,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <sys/stat.h>
+diff --git a/libgeda/src/o_attrib.c b/libgeda/src/o_attrib.c
+index 3c73656..b80042f 100644
+--- a/libgeda/src/o_attrib.c
++++ b/libgeda/src/o_attrib.c
+@@ -41,7 +41,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #ifdef HAVE_STRING_H
+diff --git a/libgeda/src/o_text_basic.c b/libgeda/src/o_text_basic.c
+index 87b2410..c061c82 100644
+--- a/libgeda/src/o_text_basic.c
++++ b/libgeda/src/o_text_basic.c
+@@ -60,7 +60,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <math.h>
+diff --git a/libgeda/src/s_clib.c b/libgeda/src/s_clib.c
+index 8718b57..fe1ad25 100644
+--- a/libgeda/src/s_clib.c
++++ b/libgeda/src/s_clib.c
+@@ -111,7 +111,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <glib.h>
+diff --git a/libgeda/src/s_color.c b/libgeda/src/s_color.c
+index b4693f4..6723688 100644
+--- a/libgeda/src/s_color.c
++++ b/libgeda/src/s_color.c
+@@ -18,7 +18,6 @@
+  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+  */
+ #include <config.h>
+-#include <missing.h>
+ 
+ #include <stdio.h>
+ #include <math.h>
+diff --git a/m4/geda-guile.m4 b/m4/geda-guile.m4
+index 7f88998..0144fc2 100644
+--- a/m4/geda-guile.m4
++++ b/m4/geda-guile.m4
+@@ -105,25 +105,4 @@ configure.])
+     fi
+   fi
+ 
+-  # Check for functions in `libguile'
+-  # ---------------------------------
+-
+-  # Save build-related variables
+-  save_CFLAGS="${CFLAGS}"
+-  save_LIBS="${LIBS}"
+-
+-  CFLAGS="${GUILE_CFLAGS} ${CFLAGS}"
+-  LIBS="${GUILE_LIBS}"
+-
+-  AC_CHECK_FUNCS([scm_from_utf8_string])
+-  AC_CHECK_FUNCS([scm_from_utf8_stringn])
+-  AC_CHECK_FUNCS([scm_to_utf8_string])
+-  AC_CHECK_FUNCS([scm_to_utf8_stringn])
+-  AC_CHECK_FUNCS([scm_from_utf8_symbol])
+-  AC_CHECK_FUNCS([scm_from_utf8_symboln])
+-
+-  # Restore build-related variables
+-  CFLAGS="${save_CFLAGS}"
+-  LIBS="${save_LIBS}"
+-
+ ])dnl AX_CHECK_GUILE
+diff --git a/missing.h b/missing.h
+deleted file mode 100644
+index 1d4666a..0000000
+--- a/missing.h
++++ /dev/null
+@@ -1,39 +0,0 @@
+-
+-/* This file contains preprocessor macros which provide substitutes
+- * for missing functions or other definitions based on the results of
+- * configure. */
+-
+-/* We need to be able to pass UTF-8 strings to and from libguile.  The
+- * most forward-compatible way to do this is to explicitly use the
+- * "utf8" API for doing so, but this API is only available from Guile
+- * 2.0 onwards.
+- *
+- * In Guile 2.0 there is a similar "locale" API which encodes/decodes
+- * strings differently based on the locale, so we need to avoid it in
+- * case the user decides to set a non-UTF-8 locale.  However, the
+- * "locale" API *is* present in Guile 1.8, in which it doesn't attempt
+- * to encode/decode the strings its passed, so we can use it as a
+- * direct replacement for the "utf8" API.
+- *
+- * Confused yet?
+- */
+-
+-#ifndef HAVE_SCM_FROM_UTF8_STRINGN
+-#  define scm_from_utf8_stringn scm_from_locale_stringn
+-#endif
+-#ifndef HAVE_SCM_FROM_UTF8_STRING
+-#  define scm_from_utf8_string(x) scm_from_utf8_stringn ((x), -1)
+-#endif
+-#ifndef HAVE_SCM_TO_UTF8_STRINGN
+-#  define scm_to_utf8_stringn scm_to_locale_stringn
+-#endif
+-#ifndef HAVE_SCM_TO_UTF8_STRING
+-#  define scm_to_utf8_string(x) scm_to_utf8_stringn ((x), NULL)
+-#endif
+-
+-#ifndef HAVE_SCM_FROM_UTF8_SYMBOLN
+-#  define scm_from_utf8_symboln scm_from_locale_symboln
+-#endif
+-#ifndef HAVE_SCM_FROM_UTF8_SYMBOL
+-#  define scm_from_utf8_symbol scm_from_locale_symbol
+-#endif
+diff --git a/utils/gschlas/g_rc.c b/utils/gschlas/g_rc.c
+index c4355ee..c13d546 100644
+--- a/utils/gschlas/g_rc.c
++++ b/utils/gschlas/g_rc.c
+@@ -20,7 +20,6 @@
+  */
+ 
+ #include <config.h>
+-#include <missing.h>
+ #include <version.h>
+ 
+ #include <stdio.h>
+-- 
+2.1.4
+

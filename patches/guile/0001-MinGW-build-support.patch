@@ -1,0 +1,28 @@
+From df0da966bf6603dd696ee9297cb7ccfc5e3e2bf3 Mon Sep 17 00:00:00 2001
+From: Vladimir Zhbanov <vzhbanov@gmail.com>
+Date: Fri, 27 Feb 2015 15:45:03 +0300
+Subject: [PATCH] MinGW build support.
+
+---
+ libguile/iselect.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/libguile/iselect.h b/libguile/iselect.h
+index 1272b8d..b4eedb7 100644
+--- a/libguile/iselect.h
++++ b/libguile/iselect.h
+@@ -28,7 +28,11 @@
+ /* Needed for FD_SET on some systems.  */
+ #include <sys/types.h>
+ 
++#ifdef __MINGW32__
++#include <winsock2.h>
++#else
+ #include <sys/select.h>
++#endif
+ 
+ SCM_API int scm_std_select (int fds,
+ 			    fd_set *rfds,
+-- 
+2.1.4
+

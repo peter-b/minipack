@@ -1,8 +1,9 @@
-name=gd
-version=2.0.35
+name=libgd
+version=2.1.1
+download=https://github.com/libgd
+repository=libgd.git
+commit=gd-$version
 release=1
-download=ftp://ftp.slackware.com/pub/slackware/slackware-13.37/source/l/gd
-source_package_type=tar.bz2
 
 configure_opt="
   --disable-static
@@ -15,16 +16,90 @@ src_prep()
   autoreconf -ivf
 }
 
+src_get_source()
+{
+  pkg_download=$download/$repository
+
+  if [ -z "$pkg_download" ]; then
+    echo >&2 "$name: download location not found."
+    exit 1
+  fi
+
+  echo Clone repository $name from $pkg_download ...
+  cd $sourcedir
+  if [ -d $name ]; then
+    cd $name && git pull
+  else
+    git clone $pkg_download
+  fi
+
+  if [ $? != 0 ]; then
+    echo >&2 "$(basename $0) source: Failed to clone $name"
+    exit 1
+  fi
+}
+
+src_unpack_source()
+{
+  : ${top_srcdir:=$name-$version}
+
+  buildroot=$builddir/$name-$version-$release
+
+  if [ -d $buildroot/$top_srcdir ]; then
+    exit 0
+  fi
+
+  sourcename=$sourcedir/$name
+  if [ ! -e $sourcename ]; then
+    $mpk source $pkg
+    if [ ! -e $sourcename ]; then
+      echo >&2 "$(basename $0) unpack: Could not find source for $pkg"
+      exit 1
+    fi
+  fi
+
+  mkdir -p $buildroot
+  cp -ar $sourcename $buildroot/$name-$version
+
+  cd $buildroot/${top_srcdir}
+
+  git checkout $commit
+
+  if [ $? != 0 ]; then
+    echo >&2 "$(basename $0) unpack: Could not checkout commit $commit for $sourcename"
+    exit 1
+  fi
+
+  pkg_patchdir=$patchdir/$name
+
+  if [ -d $pkg_patchdir ]; then
+    patches=`find $pkg_patchdir -name '*.patch' | sort`
+    for p in $patches; do
+      patch -p1 -i "$p"
+      if [ $? != 0 ]; then
+        echo >&2 "$(basename $0) unpack: Failed apply patches for $sourcename"
+        exit 1
+      fi
+    done
+  fi
+
+  src_prep
+
+  if [ $? != 0 ]; then
+    echo >&2 "$(basename $0) unpack: Failed to prepare build directory for $sourcename"
+    exit 1
+  fi
+}
+
 # Compatibility with existing binary package
 src_install()
 {
   do_install
-  
+
   case "$host" in
     *mingw*) ln -f $resultdir/lib/libgd.dll.a $resultdir/lib/bgd.lib ;;
   esac
-  
+
   mkdir -p $local_tooldir
   cp $tooldir/tool.template $local_tooldir/gdlib-config
 }
-

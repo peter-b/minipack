@@ -18,6 +18,8 @@ Some recipes for cross-compiling to Windows are included in the distribution:
 
 See Makefile for a full list.
 
+NOTE: Guile requires special treatment. Please see the Guile section below.
+
 When cross-compiling, you need a suitable cross-compiler for the host you are
 targeting. On Debian and derivatives, you can type 'sudo apt-get install mingw32'
 to get a MinGW cross-compiler. You can also build your own by using the build
@@ -49,6 +51,19 @@ The path to the MinGW DLL's on your system may differ.
 Use your own prefix or don't use it at all. In the latter case the
 built programs will be installed into the ./install directory. (You can make
 it symlink to an actual installation directory.)
+
+=====
+Guile
+=====
+
+In order to compile Guile, you have to have the same pre-compiled version of
+Guile installed on your system, so first of all, you have to build it from
+sources BEFORE compilation of all packages.  Remove all the Guile packages
+installed on your system. Then do:
+  ./mpk source guile
+  cp -r sources/guile .
+  cd guile/
+  ./autogen.sh && ./configure && make && sudo make install
 
 =======
   mpk

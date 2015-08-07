@@ -1,4 +1,6 @@
 /build
 /result
 /sources
+/.stamp
+/mingw-libs
 *~

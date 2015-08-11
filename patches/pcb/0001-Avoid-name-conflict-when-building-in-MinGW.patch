@@ -1,0 +1,940 @@
+From 78df2be6610314ff0ea138f2afb3318d1bd9ce8c Mon Sep 17 00:00:00 2001
+From: Vladimir Zhbanov <vzhbanov@gmail.com>
+Date: Mon, 16 Mar 2015 16:52:13 +0300
+Subject: [PATCH] Avoid name conflict when building in MinGW.
+
+ELEMENT_TYPE is considered not a variable name in MinGW for some reason,
+so I've replaced it with PCB_ELEMENT_NAME.
+---
+ src/action.c     | 66 ++++++++++++++++++++++++++++----------------------------
+ src/buffer.c     |  6 +++---
+ src/change.c     |  6 +++---
+ src/change.h     | 10 ++++-----
+ src/const.h      |  4 ++--
+ src/copy.c       |  2 +-
+ src/copy.h       |  2 +-
+ src/crosshair.c  | 10 ++++-----
+ src/draw.c       |  4 ++--
+ src/file.c       |  2 +-
+ src/find.c       |  6 +++---
+ src/mirror.c     |  2 +-
+ src/misc.c       |  6 +++---
+ src/move.h       |  2 +-
+ src/polygon.c    |  2 +-
+ src/remove.c     |  2 +-
+ src/remove.h     |  2 +-
+ src/report.c     |  4 ++--
+ src/report.h     |  2 +-
+ src/rotate.c     |  4 ++--
+ src/rotate.h     |  2 +-
+ src/rubberband.c |  4 ++--
+ src/search.c     | 16 +++++++-------
+ src/select.c     | 16 +++++++-------
+ src/select.h     |  2 +-
+ src/strflags.c   |  6 +++---
+ src/undo.c       |  2 +-
+ 27 files changed, 96 insertions(+), 96 deletions(-)
+
+diff --git a/src/action.c b/src/action.c
+index e496820..7777ace 100644
+--- a/src/action.c
++++ b/src/action.c
+@@ -1122,7 +1122,7 @@ NotifyMode (void)
+     case LOCK_MODE:
+       {
+ 	type = SearchScreen (Note.X, Note.Y, LOCK_TYPES, &ptr1, &ptr2, &ptr3);
+-	if (type == ELEMENT_TYPE)
++	if (type == PCB_ELEMENT_TYPE)
+ 	  {
+ 	    ElementType *element = (ElementType *) ptr2;
+ 
+@@ -1542,9 +1542,9 @@ NotifyMode (void)
+ 	if (gui->shift_is_pressed ())
+ 	  {
+ 	    int type =
+-	      SearchScreen (Note.X, Note.Y, ELEMENT_TYPE, &ptr1, &ptr2,
++	      SearchScreen (Note.X, Note.Y, PCB_ELEMENT_TYPE, &ptr1, &ptr2,
+ 			    &ptr3);
+-	    if (type == ELEMENT_TYPE)
++	    if (type == PCB_ELEMENT_TYPE)
+ 	      {
+ 		e = (ElementType *) ptr1;
+ 		if (e)
+@@ -1564,9 +1564,9 @@ NotifyMode (void)
+ 	if (e)
+ 	  {
+ 	    int type =
+-	      SearchScreen (Note.X, Note.Y, ELEMENT_TYPE, &ptr1, &ptr2,
++	      SearchScreen (Note.X, Note.Y, PCB_ELEMENT_TYPE, &ptr1, &ptr2,
+ 			    &ptr3);
+-	    if (type == ELEMENT_TYPE && ptr1)
++	    if (type == PCB_ELEMENT_TYPE && ptr1)
+ 	      {
+ 		int i, save_n;
+ 		e = (ElementType *) ptr1;
+@@ -1602,7 +1602,7 @@ NotifyMode (void)
+ 	      Message (_("Sorry, the object is locked\n"));
+ 	      break;
+ 	    }
+-	  if (type == ELEMENT_TYPE)
++	  if (type == PCB_ELEMENT_TYPE)
+ 	    {
+ 	      RubberbandType *ptr;
+ 	      int i;
+@@ -1953,7 +1953,7 @@ ActionFlip (int argc, char **argv, Coord x, Coord y)
+       switch (GetFunctionID (function))
+ 	{
+ 	case F_Object:
+-	  if ((SearchScreen (x, y, ELEMENT_TYPE,
++	  if ((SearchScreen (x, y, PCB_ELEMENT_TYPE,
+ 			     &ptrtmp, &ptrtmp, &ptrtmp)) != NO_TYPE)
+ 	    {
+ 	      element = (ElementType *) ptrtmp;
+@@ -2434,7 +2434,7 @@ ActionDisperseElements (int argc, char **argv, Coord x, Coord y)
+ 	MoveElementLowLevel (PCB->Data, element, dx, dy);
+ 
+ 	/* and add to the undo list so we can undo this operation */
+-	AddObjectToMoveUndoList (ELEMENT_TYPE, NULL, NULL, element, dx, dy);
++	AddObjectToMoveUndoList (PCB_ELEMENT_TYPE, NULL, NULL, element, dx, dy);
+ 
+ 	/* keep track of how tall this row is */
+ 	minx += element->BoundingBox.X2 - element->BoundingBox.X1 + GAP;
+@@ -2829,7 +2829,7 @@ ActionDisplay (int argc, char **argv, Coord childX, Coord childY)
+ 
+ 	    gui->get_coords (_("Click on an element"), &x, &y);
+ 	    if ((SearchScreen
+-		 (x, y, ELEMENT_TYPE, &ptrtmp,
++		 (x, y, PCB_ELEMENT_TYPE, &ptrtmp,
+ 		  &ptrtmp, &ptrtmp)) != NO_TYPE)
+ 	      {
+ 		element = (ElementType *) ptrtmp;
+@@ -2844,11 +2844,11 @@ ActionDisplay (int argc, char **argv, Coord childX, Coord childY)
+ 	    void *ptr1, *ptr2, *ptr3;
+ 
+ 	    switch (SearchScreen (Crosshair.X, Crosshair.Y,
+-				  ELEMENT_TYPE | PIN_TYPE | PAD_TYPE |
++				  PCB_ELEMENT_TYPE | PIN_TYPE | PAD_TYPE |
+ 				  VIA_TYPE, (void **) &ptr1, (void **) &ptr2,
+ 				  (void **) &ptr3))
+ 	      {
+-	      case ELEMENT_TYPE:
++	      case PCB_ELEMENT_TYPE:
+ 		PIN_LOOP ((ElementType *) ptr1);
+ 		{
+ 		  if (TEST_FLAG (DISPLAYNAMEFLAG, pin))
+@@ -3501,12 +3501,12 @@ ActionRenumber (int argc, char **argv, Coord x, Coord y)
+ 	      is[c_cnt] = strdup (tmps);
+ 	      c_cnt++;
+ 
+-	      AddObjectToChangeNameUndoList (ELEMENT_TYPE, NULL, NULL,
++	      AddObjectToChangeNameUndoList (PCB_ELEMENT_TYPE, NULL, NULL,
+ 					     element_list[i],
+ 					     NAMEONPCB_NAME (element_list
+ 							     [i]));
+ 
+-	      ChangeObjectName (ELEMENT_TYPE, element_list[i], NULL, NULL,
++	      ChangeObjectName (PCB_ELEMENT_TYPE, element_list[i], NULL, NULL,
+ 				tmps);
+ 	      changed = true;
+ 
+@@ -3692,20 +3692,20 @@ ActionRipUp (int argc, char **argv, Coord x, Coord y)
+ 	  {
+ 	    void *ptr1, *ptr2, *ptr3;
+ 
+-	    if (SearchScreen (Crosshair.X, Crosshair.Y, ELEMENT_TYPE,
++	    if (SearchScreen (Crosshair.X, Crosshair.Y, PCB_ELEMENT_TYPE,
+ 			      &ptr1, &ptr2, &ptr3) != NO_TYPE)
+ 	      {
+ 		Note.Buffer = Settings.BufferNumber;
+ 		SetBufferNumber (MAX_BUFFER - 1);
+ 		ClearBuffer (PASTEBUFFER);
+ 		CopyObjectToBuffer (PASTEBUFFER->Data, PCB->Data,
+-				    ELEMENT_TYPE, ptr1, ptr2, ptr3);
++				    PCB_ELEMENT_TYPE, ptr1, ptr2, ptr3);
+ 		SmashBufferElement (PASTEBUFFER);
+ 		PASTEBUFFER->X = 0;
+ 		PASTEBUFFER->Y = 0;
+ 		SaveUndoSerialNumber ();
+-		EraseObject (ELEMENT_TYPE, ptr1, ptr1);
+-		MoveObjectToRemoveUndoList (ELEMENT_TYPE, ptr1, ptr2, ptr3);
++		EraseObject (PCB_ELEMENT_TYPE, ptr1, ptr1);
++		MoveObjectToRemoveUndoList (PCB_ELEMENT_TYPE, ptr1, ptr2, ptr3);
+ 		RestoreUndoSerialNumber ();
+ 		CopyPastebufferToLayout (0, 0);
+ 		SetBufferNumber (Note.Buffer);
+@@ -4105,7 +4105,7 @@ ActionChangeSize (int argc, char **argv, Coord x, Coord y)
+ 	  break;
+ 
+ 	case F_SelectedElements:
+-	  if (ChangeSelectedSize (ELEMENT_TYPE, value, absolute))
++	  if (ChangeSelectedSize (PCB_ELEMENT_TYPE, value, absolute))
+ 	    SetChangedFlag (true);
+ 	  break;
+ 
+@@ -4593,7 +4593,7 @@ ActionChangeName (int argc, char **argv, Coord x, Coord y)
+ 		if (QueryInputAndChangeObjectName (type, ptr1, ptr2, ptr3))
+ 		  {
+ 		    SetChangedFlag (true);
+-		    if (type == ELEMENT_TYPE)
++		    if (type == PCB_ELEMENT_TYPE)
+ 		      {
+ 			RubberbandType *ptr;
+ 			int i;
+@@ -4727,7 +4727,7 @@ ActionToggleHideName (int argc, char **argv, Coord x, Coord y)
+ 	    void *ptr1, *ptr2, *ptr3;
+ 
+ 	    gui->get_coords (_("Select an Object"), &x, &y);
+-	    if ((type = SearchScreen (x, y, ELEMENT_TYPE,
++	    if ((type = SearchScreen (x, y, PCB_ELEMENT_TYPE,
+ 				      &ptr1, &ptr2, &ptr3)) != NO_TYPE)
+ 	      {
+ 		AddObjectToFlagUndoList (type, ptr1, ptr2, ptr3);
+@@ -4750,7 +4750,7 @@ ActionToggleHideName (int argc, char **argv, Coord x, Coord y)
+ 			      &NAMEONPCB_TEXT (element)))
+ 		  && (FRONT (element) || PCB->InvisibleObjectsOn))
+ 		{
+-		  AddObjectToFlagUndoList (ELEMENT_TYPE, element,
++		  AddObjectToFlagUndoList (PCB_ELEMENT_TYPE, element,
+ 					   element, element);
+ 		  EraseElementName (element);
+ 		  TOGGLE_FLAG (HIDENAMEFLAG, element);
+@@ -4873,7 +4873,7 @@ ActionChangeSquare (int argc, char **argv, Coord x, Coord y)
+ 	  }
+ 
+ 	case F_SelectedElements:
+-	  if (ChangeSelectedSquare (ELEMENT_TYPE))
++	  if (ChangeSelectedSquare (PCB_ELEMENT_TYPE))
+ 	    SetChangedFlag (true);
+ 	  break;
+ 
+@@ -4931,7 +4931,7 @@ ActionSetSquare (int argc, char **argv, Coord x, Coord y)
+ 	  }
+ 
+ 	case F_SelectedElements:
+-	  if (SetSelectedSquare (ELEMENT_TYPE))
++	  if (SetSelectedSquare (PCB_ELEMENT_TYPE))
+ 	    SetChangedFlag (true);
+ 	  break;
+ 
+@@ -4990,7 +4990,7 @@ ActionClearSquare (int argc, char **argv, Coord x, Coord y)
+ 	  }
+ 
+ 	case F_SelectedElements:
+-	  if (ClrSelectedSquare (ELEMENT_TYPE))
++	  if (ClrSelectedSquare (PCB_ELEMENT_TYPE))
+ 	    SetChangedFlag (true);
+ 	  break;
+ 
+@@ -5048,7 +5048,7 @@ ActionChangeOctagon (int argc, char **argv, Coord x, Coord y)
+ 	  }
+ 
+ 	case F_SelectedElements:
+-	  if (ChangeSelectedOctagon (ELEMENT_TYPE))
++	  if (ChangeSelectedOctagon (PCB_ELEMENT_TYPE))
+ 	    SetChangedFlag (true);
+ 	  break;
+ 
+@@ -5109,7 +5109,7 @@ ActionSetOctagon (int argc, char **argv, Coord x, Coord y)
+ 	  }
+ 
+ 	case F_SelectedElements:
+-	  if (SetSelectedOctagon (ELEMENT_TYPE))
++	  if (SetSelectedOctagon (PCB_ELEMENT_TYPE))
+ 	    SetChangedFlag (true);
+ 	  break;
+ 
+@@ -5172,7 +5172,7 @@ ActionClearOctagon (int argc, char **argv, Coord x, Coord y)
+ 	  }
+ 
+ 	case F_SelectedElements:
+-	  if (ClrSelectedOctagon (ELEMENT_TYPE))
++	  if (ClrSelectedOctagon (PCB_ELEMENT_TYPE))
+ 	    SetChangedFlag (true);
+ 	  break;
+ 
+@@ -5357,7 +5357,7 @@ ActionSelect (int argc, char **argv, Coord x, Coord y)
+ 	  int type;
+ 	  /* select objects by their names */
+ 	case F_ElementByName:
+-	  type = ELEMENT_TYPE;
++	  type = PCB_ELEMENT_TYPE;
+ 	  goto commonByName;
+ 	case F_ObjectByName:
+ 	  type = ALL_TYPES;
+@@ -5553,7 +5553,7 @@ ActionUnselect (int argc, char **argv, Coord x, Coord y)
+ 	  int type;
+ 	  /* select objects by their names */
+ 	case F_ElementByName:
+-	  type = ELEMENT_TYPE;
++	  type = PCB_ELEMENT_TYPE;
+ 	  goto commonByName;
+ 	case F_ObjectByName:
+ 	  type = ALL_TYPES;
+@@ -5759,7 +5759,7 @@ ActionSaveTo (int argc, char **argv, Coord x, Coord y)
+       FILE *fp;
+       bool result;
+ 
+-      if ((SearchScreen (Crosshair.X, Crosshair.Y, ELEMENT_TYPE,
++      if ((SearchScreen (Crosshair.X, Crosshair.Y, PCB_ELEMENT_TYPE,
+ 			 &ptrtmp, &ptrtmp, &ptrtmp)) != NO_TYPE)
+ 	{
+ 	  element = (ElementType *) ptrtmp;
+@@ -6522,7 +6522,7 @@ ActionMoveObject (int argc, char **argv, Coord x, Coord y)
+   Crosshair.AttachedObject.RubberbandN = 0;
+   if (TEST_FLAG (RUBBERBANDFLAG, PCB))
+     LookupRubberbandLines (type, ptr1, ptr2, ptr3);
+-  if (type == ELEMENT_TYPE)
++  if (type == PCB_ELEMENT_TYPE)
+     LookupRatLines (type, ptr1, ptr2, ptr3);
+   MoveObjectAndRubberband (type, ptr1, ptr2, ptr3, nx, ny);
+   SetChangedFlag (true);
+@@ -6825,7 +6825,7 @@ ChangeFlag (char *what, char *flag_name, int value, char *cmd_name)
+       break;
+ 
+     case F_SelectedElements:
+-      if (set_selected (ELEMENT_TYPE))
++      if (set_selected (PCB_ELEMENT_TYPE))
+ 	SetChangedFlag (true);
+       break;
+ 
+@@ -7984,7 +7984,7 @@ ActionAttributes (int argc, char **argv, Coord x, Coord y)
+ 	    void *ptrtmp;
+ 	    gui->get_coords (_("Click on an element"), &x, &y);
+ 	    if ((SearchScreen
+-		 (x, y, ELEMENT_TYPE, &ptrtmp,
++		 (x, y, PCB_ELEMENT_TYPE, &ptrtmp,
+ 		  &ptrtmp, &ptrtmp)) != NO_TYPE)
+ 	      e = (ElementType *) ptrtmp;
+ 	    else
+diff --git a/src/buffer.c b/src/buffer.c
+index f675add..59c66a1 100644
+--- a/src/buffer.c
++++ b/src/buffer.c
+@@ -1097,7 +1097,7 @@ ConvertBufferToElement (BufferType *Buffer)
+   END_LOOP;
+   if (!hasParts)
+     {
+-      DestroyObject (PCB->Data, ELEMENT_TYPE, Element, Element, Element);
++      DestroyObject (PCB->Data, PCB_ELEMENT_TYPE, Element, Element, Element);
+       Message (_("There was nothing to convert!\n"
+ 		 "Elements must have some silk, pads or pins.\n"));
+       return (false);
+@@ -1111,7 +1111,7 @@ ConvertBufferToElement (BufferType *Buffer)
+     SET_FLAG (ONSOLDERFLAG, Element);
+   SetElementBoundingBox (PCB->Data, Element, &PCB->Font);
+   ClearBuffer (Buffer);
+-  MoveObjectToBuffer (Buffer->Data, PCB->Data, ELEMENT_TYPE, Element, Element,
++  MoveObjectToBuffer (Buffer->Data, PCB->Data, PCB_ELEMENT_TYPE, Element, Element,
+ 		      Element);
+   SetBufferBoundingBox (Buffer);
+   return (true);
+@@ -1278,7 +1278,7 @@ FreeRotateElementLowLevel (DataType *Data, ElementType *Element,
+ 
+   free_rotate (&Element->MarkX, &Element->MarkY, X, Y, cosa, sina);
+   SetElementBoundingBox (Data, Element, &PCB->Font);
+-  ClearFromPolygon (Data, ELEMENT_TYPE, Element, Element);
++  ClearFromPolygon (Data, PCB_ELEMENT_TYPE, Element, Element);
+ }
+ 
+ void
+diff --git a/src/change.c b/src/change.c
+index 7e95672..d42f5ae 100644
+--- a/src/change.c
++++ b/src/change.c
+@@ -1102,7 +1102,7 @@ ChangeElementSide (ElementType *Element, Coord yoff)
+   if (TEST_FLAG (LOCKFLAG, Element))
+     return (false);
+   EraseElement (Element);
+-  AddObjectToMirrorUndoList (ELEMENT_TYPE, Element, Element, Element, yoff);
++  AddObjectToMirrorUndoList (PCB_ELEMENT_TYPE, Element, Element, Element, yoff);
+   MirrorElementCoordinates (PCB->Data, Element, yoff);
+   DrawElement (Element);
+   return (true);
+@@ -2264,7 +2264,7 @@ QueryInputAndChangeObjectName (int Type, void *Ptr1, void *Ptr2, void *Ptr3)
+   /* if passed an element name, make it an element reference instead */
+   if (Type == ELEMENTNAME_TYPE)
+     {
+-      Type = ELEMENT_TYPE;
++      Type = PCB_ELEMENT_TYPE;
+       Ptr2 = Ptr1;
+       Ptr3 = Ptr1;
+     }
+@@ -2295,7 +2295,7 @@ QueryInputAndChangeObjectName (int Type, void *Ptr1, void *Ptr2, void *Ptr3)
+ 			      EMPTY (((TextType *) Ptr2)->TextString));
+       break;
+ 
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       name = gui->prompt_for (_("Elementname:"),
+ 			      EMPTY (ELEMENT_NAME
+ 				     (PCB, (ElementType *) Ptr2)));
+diff --git a/src/change.h b/src/change.h
+index 5d59362..732d77a 100644
+--- a/src/change.h
++++ b/src/change.h
+@@ -36,24 +36,24 @@
+  * some defines
+  */
+ #define	CHANGENAME_TYPES        \
+-	(VIA_TYPE | PIN_TYPE | PAD_TYPE | TEXT_TYPE | ELEMENT_TYPE | ELEMENTNAME_TYPE | LINE_TYPE)
++	(VIA_TYPE | PIN_TYPE | PAD_TYPE | TEXT_TYPE | PCB_ELEMENT_TYPE | ELEMENTNAME_TYPE | LINE_TYPE)
+ 
+ #define	CHANGESIZE_TYPES        \
+ 	(POLYGON_TYPE | VIA_TYPE | PIN_TYPE | PAD_TYPE | LINE_TYPE | \
+-	 ARC_TYPE | TEXT_TYPE | ELEMENTNAME_TYPE | ELEMENT_TYPE)
++	 ARC_TYPE | TEXT_TYPE | ELEMENTNAME_TYPE | PCB_ELEMENT_TYPE)
+ 
+ #define	CHANGE2NDSIZE_TYPES     \
+-	(VIA_TYPE | PIN_TYPE | ELEMENT_TYPE)
++	(VIA_TYPE | PIN_TYPE | PCB_ELEMENT_TYPE)
+ 
+ /* We include polygons here only to inform the user not to do it that way.  */
+ #define CHANGECLEARSIZE_TYPES	\
+ 	(PIN_TYPE | PAD_TYPE | VIA_TYPE | LINE_TYPE | ARC_TYPE | POLYGON_TYPE)
+ 
+ #define	CHANGESQUARE_TYPES     \
+-	(ELEMENT_TYPE | PIN_TYPE | PAD_TYPE)
++	(PCB_ELEMENT_TYPE | PIN_TYPE | PAD_TYPE)
+ 
+ #define	CHANGEOCTAGON_TYPES     \
+-	(ELEMENT_TYPE | PIN_TYPE | VIA_TYPE)
++	(PCB_ELEMENT_TYPE | PIN_TYPE | VIA_TYPE)
+ 
+ #define CHANGEJOIN_TYPES	\
+ 	(ARC_TYPE | LINE_TYPE | TEXT_TYPE)
+diff --git a/src/const.h b/src/const.h
+index 7cbf194..b59f82a 100644
+--- a/src/const.h
++++ b/src/const.h
+@@ -309,7 +309,7 @@ When set, element names are not drawn.
+  */
+ #define	NO_TYPE			0x00000	/* no object */
+ #define	VIA_TYPE		0x00001
+-#define	ELEMENT_TYPE		0x00002
++#define	PCB_ELEMENT_TYPE		0x00002
+ #define	LINE_TYPE		0x00004
+ #define	POLYGON_TYPE		0x00008
+ #define	TEXT_TYPE		0x00010
+@@ -329,7 +329,7 @@ When set, element names are not drawn.
+ #define ARCPOINT_TYPE		0x40000
+ 
+ #define PIN_TYPES     (VIA_TYPE | PIN_TYPE)
+-#define LOCK_TYPES    (VIA_TYPE | LINE_TYPE | ARC_TYPE | POLYGON_TYPE | ELEMENT_TYPE \
++#define LOCK_TYPES    (VIA_TYPE | LINE_TYPE | ARC_TYPE | POLYGON_TYPE | PCB_ELEMENT_TYPE \
+                       | TEXT_TYPE | ELEMENTNAME_TYPE | LOCKED_TYPE)
+ 
+ #define	ALL_TYPES		(~0)	/* all bits set */
+diff --git a/src/copy.c b/src/copy.c
+index b0cd9c8..587f607 100644
+--- a/src/copy.c
++++ b/src/copy.c
+@@ -292,7 +292,7 @@ CopyElement (ElementType *Element)
+                                               DeltaX, DeltaY, NOCOPY_FLAGS);
+ 
+   /* this call clears the polygons */
+-  AddObjectToCreateUndoList (ELEMENT_TYPE, element, element, element);
++  AddObjectToCreateUndoList (PCB_ELEMENT_TYPE, element, element, element);
+   if (PCB->ElementOn && (FRONT (element) || PCB->InvisibleObjectsOn))
+     {
+       DrawElementName (element);
+diff --git a/src/copy.h b/src/copy.h
+index e7f39cf..16a9e0b 100644
+--- a/src/copy.h
++++ b/src/copy.h
+@@ -37,7 +37,7 @@
+  */
+ #define	COPY_TYPES              \
+ 	(VIA_TYPE | LINE_TYPE | TEXT_TYPE | \
+-	ELEMENT_TYPE | ELEMENTNAME_TYPE | POLYGON_TYPE | ARC_TYPE)
++	PCB_ELEMENT_TYPE | ELEMENTNAME_TYPE | POLYGON_TYPE | ARC_TYPE)
+ 
+ 
+ PolygonType * CopyPolygonLowLevel (PolygonType *, PolygonType *);
+diff --git a/src/crosshair.c b/src/crosshair.c
+index 1079c5f..5619402 100644
+--- a/src/crosshair.c
++++ b/src/crosshair.c
+@@ -487,7 +487,7 @@ XORDrawMoveOrCopyObject (void)
+       /* pin/pad movements result in moving an element */
+     case PAD_TYPE:
+     case PIN_TYPE:
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       XORDrawElement ((ElementType *) Crosshair.AttachedObject.Ptr2, dx, dy);
+       break;
+     }
+@@ -962,9 +962,9 @@ FitCrosshairIntoGrid (Coord X, Coord Y)
+   ans = NO_TYPE;
+   if (!PCB->RatDraw)
+     ans = SearchScreenGridSlop (Crosshair.X, Crosshair.Y,
+-                                ELEMENT_TYPE, &ptr1, &ptr2, &ptr3);
++                                PCB_ELEMENT_TYPE, &ptr1, &ptr2, &ptr3);
+ 
+-  if (ans & ELEMENT_TYPE)
++  if (ans & PCB_ELEMENT_TYPE)
+     {
+       ElementType *el = (ElementType *) ptr1;
+       check_snap_object (&snap_data, el->MarkX, el->MarkY, false);
+@@ -978,7 +978,7 @@ FitCrosshairIntoGrid (Coord X, Coord Y)
+   /* Avoid self-snapping when moving */
+   if (ans != NO_TYPE &&
+       Settings.Mode == MOVE_MODE &&
+-      Crosshair.AttachedObject.Type == ELEMENT_TYPE &&
++      Crosshair.AttachedObject.Type == PCB_ELEMENT_TYPE &&
+       ptr1 == Crosshair.AttachedObject.Ptr1)
+     ans = NO_TYPE;
+ 
+@@ -1035,7 +1035,7 @@ FitCrosshairIntoGrid (Coord X, Coord Y)
+   /* Avoid self-snapping when moving */
+   if (ans != NO_TYPE &&
+       Settings.Mode == MOVE_MODE &&
+-      Crosshair.AttachedObject.Type == ELEMENT_TYPE &&
++      Crosshair.AttachedObject.Type == PCB_ELEMENT_TYPE &&
+       ptr1 == Crosshair.AttachedObject.Ptr1)
+     ans = NO_TYPE;
+ 
+diff --git a/src/draw.c b/src/draw.c
+index a682f9d..e0909d3 100644
+--- a/src/draw.c
++++ b/src/draw.c
+@@ -1453,7 +1453,7 @@ EraseObject (int type, void *lptr, void *ptr)
+     case POLYGON_TYPE:
+       ErasePolygon ((PolygonType *) ptr);
+       break;
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       EraseElement ((ElementType *) ptr);
+       break;
+     case LINE_TYPE:
+@@ -1500,7 +1500,7 @@ DrawObject (int type, void *ptr1, void *ptr2)
+       if (((LayerType *) ptr1)->On)
+ 	DrawPolygon ((LayerType *) ptr1, (PolygonType *) ptr2);
+       break;
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       if (PCB->ElementOn &&
+ 	  (FRONT ((ElementType *) ptr2) || PCB->InvisibleObjectsOn))
+ 	DrawElement ((ElementType *) ptr2);
+diff --git a/src/file.c b/src/file.c
+index 01d3b39..a947a78 100644
+--- a/src/file.c
++++ b/src/file.c
+@@ -739,7 +739,7 @@ WriteElementData (FILE * FP, DataType *Data)
+       /* the coordinates and text-flags are the same for
+        * both names of an element
+        */
+-      fprintf (FP, "\nElement[%s ", F2S (element, ELEMENT_TYPE));
++      fprintf (FP, "\nElement[%s ", F2S (element, PCB_ELEMENT_TYPE));
+       PrintQuotedString (FP, (char *)EMPTY (DESCRIPTION_NAME (element)));
+       fputc (' ', FP);
+       PrintQuotedString (FP, (char *)EMPTY (NAMEONPCB_NAME (element)));
+diff --git a/src/find.c b/src/find.c
+index 99893da..7ac842a 100644
+--- a/src/find.c
++++ b/src/find.c
+@@ -3995,7 +3995,7 @@ DRCAll (void)
+             SET_FLAG (SELECTEDFLAG, element);
+             DrawElement (element);
+             drcerr_count++;
+-            SetThing (ELEMENT_TYPE, element, element, element);
++            SetThing (PCB_ELEMENT_TYPE, element, element, element);
+             LocateError (&x, &y);
+             BuildObjectList (&object_count, &object_id_list, &object_type_list);
+ 
+@@ -4103,7 +4103,7 @@ LocateError (Coord *x, Coord *y)
+         *y = (pad->Point1.Y + pad->Point2.Y) / 2;
+         break;
+       }
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       {
+         ElementType *element = (ElementType *) thing_ptr3;
+         *x = element->MarkX;
+@@ -4134,7 +4134,7 @@ BuildObjectList (int *object_count, long int **object_id_list, int **object_type
+     case PIN_TYPE:
+     case VIA_TYPE:
+     case PAD_TYPE:
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+     case RATLINE_TYPE:
+       *object_count = 1;
+       *object_id_list = (long int *)malloc (sizeof (long int));
+diff --git a/src/mirror.c b/src/mirror.c
+index 1adeda9..c2291f6 100644
+--- a/src/mirror.c
++++ b/src/mirror.c
+@@ -108,5 +108,5 @@ MirrorElementCoordinates (DataType *Data, ElementType *Element,
+   TOGGLE_FLAG (ONSOLDERFLAG, Element);
+   /* this inserts all of the rtree data too */
+   SetElementBoundingBox (Data, Element, &PCB->Font);
+-  ClearFromPolygon (Data, ELEMENT_TYPE, Element, Element);
++  ClearFromPolygon (Data, PCB_ELEMENT_TYPE, Element, Element);
+ }
+diff --git a/src/misc.c b/src/misc.c
+index 064c3e4..38b0360 100644
+--- a/src/misc.c
++++ b/src/misc.c
+@@ -1452,7 +1452,7 @@ GetObjectBoundingBox (int Type, void *Ptr1, void *Ptr2, void *Ptr3)
+     case ELEMENTNAME_TYPE:
+       return (BoxType *)Ptr2;
+     case VIA_TYPE:
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       return (BoxType *)Ptr1;
+     case POLYGONPOINT_TYPE:
+     case LINEPOINT_TYPE:
+@@ -1777,7 +1777,7 @@ GetGridLockCoordinates (int type, void *ptr1,
+       *x = ((TextType *) ptr2)->X;
+       *y = ((TextType *) ptr2)->Y;
+       break;
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       *x = ((ElementType *) ptr2)->MarkX;
+       *y = ((ElementType *) ptr2)->MarkY;
+       break;
+@@ -1845,7 +1845,7 @@ AttachForCopy (Coord PlaceX, Coord PlaceY)
+                            Crosshair.AttachedObject.Ptr2,
+                            Crosshair.AttachedObject.Ptr3);
+   if (Settings.Mode != COPY_MODE &&
+-      (Crosshair.AttachedObject.Type == ELEMENT_TYPE ||
++      (Crosshair.AttachedObject.Type == PCB_ELEMENT_TYPE ||
+        Crosshair.AttachedObject.Type == VIA_TYPE ||
+        Crosshair.AttachedObject.Type == LINE_TYPE ||
+        Crosshair.AttachedObject.Type == LINEPOINT_TYPE))
+diff --git a/src/move.h b/src/move.h
+index f91602e..10d3c56 100644
+--- a/src/move.h
++++ b/src/move.h
+@@ -85,7 +85,7 @@
+ 	}
+ 
+ #define	MOVE_TYPES	\
+-	(VIA_TYPE | LINE_TYPE | TEXT_TYPE | ELEMENT_TYPE | ELEMENTNAME_TYPE |	\
++	(VIA_TYPE | LINE_TYPE | TEXT_TYPE | PCB_ELEMENT_TYPE | ELEMENTNAME_TYPE |	\
+ 	POLYGON_TYPE | POLYGONPOINT_TYPE | LINEPOINT_TYPE | ARC_TYPE)
+ #define	MOVETOLAYER_TYPES	\
+ 	(LINE_TYPE | TEXT_TYPE | POLYGON_TYPE | RATLINE_TYPE | ARC_TYPE)
+diff --git a/src/polygon.c b/src/polygon.c
+index 5f17fd0..7cc722e 100644
+--- a/src/polygon.c
++++ b/src/polygon.c
+@@ -1608,7 +1608,7 @@ PlowsPolygon (DataType * Data, int type, void *ptr1, void *ptr2,
+       }
+       break;
+ 
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       {
+         PIN_LOOP ((ElementType *) ptr1);
+         {
+diff --git a/src/remove.c b/src/remove.c
+index 39af48f..4962588 100644
+--- a/src/remove.c
++++ b/src/remove.c
+@@ -577,7 +577,7 @@ RemoveElement (ElementType *Element)
+       if (!Bulk)
+ 	Draw ();
+     }
+-  MoveObjectToRemoveUndoList (ELEMENT_TYPE, Element, Element, Element);
++  MoveObjectToRemoveUndoList (PCB_ELEMENT_TYPE, Element, Element, Element);
+   return NULL;
+ }
+ 
+diff --git a/src/remove.h b/src/remove.h
+index f1f4596..dbdf22b 100644
+--- a/src/remove.h
++++ b/src/remove.h
+@@ -36,7 +36,7 @@
+  * some constants
+  */
+ #define REMOVE_TYPES            \
+-	(VIA_TYPE | LINEPOINT_TYPE | LINE_TYPE | TEXT_TYPE | ELEMENT_TYPE |	\
++	(VIA_TYPE | LINEPOINT_TYPE | LINE_TYPE | TEXT_TYPE | PCB_ELEMENT_TYPE |	\
+ 	POLYGONPOINT_TYPE | POLYGON_TYPE | RATLINE_TYPE | ARC_TYPE)
+ 
+ void *RemoveLine (LayerType *, LineType *);
+diff --git a/src/report.c b/src/report.c
+index fe75421..23d5d0e 100644
+--- a/src/report.c
++++ b/src/report.c
+@@ -397,7 +397,7 @@ ReportDialog (int argc, char **argv, Coord x, Coord y)
+ 		 TEST_FLAG (LOCKFLAG, Pad) ? _("It is LOCKED.\n") : "");
+ 	break;
+       }
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       {
+ 	ElementType *element;
+ #ifndef NDEBUG
+@@ -417,7 +417,7 @@ ReportDialog (int argc, char **argv, Coord x, Coord y)
+ 		 "Mark located at point (X,Y) = %$mD.\n"
+ 		 "It is on the %s side of the board.\n"
+ 		 "%s"), USER_UNITMASK,
+-		 element->ID, flags_to_string (element->Flags, ELEMENT_TYPE),
++		 element->ID, flags_to_string (element->Flags, PCB_ELEMENT_TYPE),
+ 		 element->BoundingBox.X1, element->BoundingBox.Y1,
+ 		 element->BoundingBox.X2, element->BoundingBox.Y2,
+ 		 EMPTY (element->Name[0].TextString),
+diff --git a/src/report.h b/src/report.h
+index c995cde..8987211 100644
+--- a/src/report.h
++++ b/src/report.h
+@@ -30,7 +30,7 @@
+ #include "global.h"
+ 
+ #define REPORT_TYPES \
+-	(VIA_TYPE | LINE_TYPE | TEXT_TYPE | POLYGON_TYPE | ELEMENT_TYPE | \
++	(VIA_TYPE | LINE_TYPE | TEXT_TYPE | POLYGON_TYPE | PCB_ELEMENT_TYPE | \
+ 	 RATLINE_TYPE | PIN_TYPE | PAD_TYPE | ELEMENTNAME_TYPE | ARC_TYPE \
+ 	 | POLYGONPOINT_TYPE | LINEPOINT_TYPE)
+ 
+diff --git a/src/rotate.c b/src/rotate.c
+index fb23ba1..fe6d394 100644
+--- a/src/rotate.c
++++ b/src/rotate.c
+@@ -251,7 +251,7 @@ RotateElementLowLevel (DataType *Data, ElementType *Element,
+   ROTATE (Element->MarkX, Element->MarkY, X, Y, Number);
+   /* SetElementBoundingBox reenters the rtree data */
+   SetElementBoundingBox (Data, Element, &PCB->Font);
+-  ClearFromPolygon (Data, ELEMENT_TYPE, Element, Element);
++  ClearFromPolygon (Data, PCB_ELEMENT_TYPE, Element, Element);
+ }
+ 
+ /* ---------------------------------------------------------------------------
+@@ -425,7 +425,7 @@ RotateScreenObject (Coord X, Coord Y, unsigned Steps)
+       Crosshair.AttachedObject.RubberbandN = 0;
+       if (TEST_FLAG (RUBBERBANDFLAG, PCB))
+ 	LookupRubberbandLines (type, ptr1, ptr2, ptr3);
+-      if (type == ELEMENT_TYPE)
++      if (type == PCB_ELEMENT_TYPE)
+ 	LookupRatLines (type, ptr1, ptr2, ptr3);
+       RotateObject (type, ptr1, ptr2, ptr3, X, Y, Steps);
+       SetChangedFlag (true);
+diff --git a/src/rotate.h b/src/rotate.h
+index 85a9361..c842623 100644
+--- a/src/rotate.h
++++ b/src/rotate.h
+@@ -56,7 +56,7 @@
+ #define	ROTATE_PAD_LOWLEVEL(p,x0,y0,n)	\
+ 	RotateLineLowLevel(((LineType *) (p)),(x0),(y0),(n))
+ 
+-#define	ROTATE_TYPES	(ELEMENT_TYPE | TEXT_TYPE | ELEMENTNAME_TYPE | ARC_TYPE)
++#define	ROTATE_TYPES	(PCB_ELEMENT_TYPE | TEXT_TYPE | ELEMENTNAME_TYPE | ARC_TYPE)
+ 
+ 
+ void RotateLineLowLevel (LineType *, Coord, Coord, unsigned);
+diff --git a/src/rubberband.c b/src/rubberband.c
+index cd2c4f6..912ba07 100644
+--- a/src/rubberband.c
++++ b/src/rubberband.c
+@@ -483,7 +483,7 @@ LookupRubberbandLines (int Type, void *Ptr1, void *Ptr2, void *Ptr3)
+    */
+   switch (Type)
+     {
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       {
+ 	ElementType *element = (ElementType *) Ptr1;
+ 
+@@ -542,7 +542,7 @@ LookupRatLines (int Type, void *Ptr1, void *Ptr2, void *Ptr3)
+ {
+   switch (Type)
+     {
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       {
+ 	ElementType *element = (ElementType *) Ptr1;
+ 
+diff --git a/src/search.c b/src/search.c
+index 5f4ea5e..1263f2b 100644
+--- a/src/search.c
++++ b/src/search.c
+@@ -1223,7 +1223,7 @@ SearchObjectByLocation (unsigned Type,
+       HigherAvail = ELEMENTNAME_TYPE;
+     }
+ 
+-  if (!HigherAvail && Type & ELEMENT_TYPE &&
++  if (!HigherAvail && Type & PCB_ELEMENT_TYPE &&
+       SearchElementByLocation (locked,
+ 			       (ElementType **) pr1,
+ 			       (ElementType **) pr2,
+@@ -1231,7 +1231,7 @@ SearchObjectByLocation (unsigned Type,
+     {
+       BoxType *box = &((ElementType *) r1)->BoundingBox;
+       HigherBound = (double) (box->X2 - box->X1) * (double) (box->Y2 - box->Y1);
+-      HigherAvail = ELEMENT_TYPE;
++      HigherAvail = PCB_ELEMENT_TYPE;
+     }
+ 
+   for (i = -1; i < max_copper_layer + 1; i++)
+@@ -1340,12 +1340,12 @@ SearchObjectByLocation (unsigned Type,
+       return (ELEMENTNAME_TYPE);
+     }
+ 
+-  if (HigherAvail & ELEMENT_TYPE)
++  if (HigherAvail & PCB_ELEMENT_TYPE)
+     {
+       *Result1 = r1;
+       *Result2 = r2;
+       *Result3 = r3;
+-      return (ELEMENT_TYPE);
++      return (PCB_ELEMENT_TYPE);
+     }
+ 
+   /* search the 'invisible objects' last */
+@@ -1366,12 +1366,12 @@ SearchObjectByLocation (unsigned Type,
+ 				   (TextType **) Result3, true))
+     return (ELEMENTNAME_TYPE);
+ 
+-  if (Type & ELEMENT_TYPE &&
++  if (Type & PCB_ELEMENT_TYPE &&
+       SearchElementByLocation (locked,
+ 			       (ElementType **) Result1,
+ 			       (ElementType **) Result2,
+ 			       (ElementType **) Result3, true))
+-    return (ELEMENT_TYPE);
++    return (PCB_ELEMENT_TYPE);
+ 
+   return (NO_TYPE);
+ }
+@@ -1509,7 +1509,7 @@ SearchObjectByID (DataType *Base,
+       END_LOOP;
+     }
+ 
+-  if (type == ELEMENT_TYPE || type == PAD_TYPE || type == PIN_TYPE
++  if (type == PCB_ELEMENT_TYPE || type == PAD_TYPE || type == PIN_TYPE
+       || type == ELEMENTLINE_TYPE || type == ELEMENTNAME_TYPE
+       || type == ELEMENTARC_TYPE)
+     /* check pins and elementnames too */
+@@ -1518,7 +1518,7 @@ SearchObjectByID (DataType *Base,
+     if (element->ID == ID)
+       {
+ 	*Result1 = *Result2 = *Result3 = (void *) element;
+-	return (ELEMENT_TYPE);
++	return (PCB_ELEMENT_TYPE);
+       }
+     if (type == ELEMENTLINE_TYPE)
+       ELEMENTLINE_LOOP (element);
+diff --git a/src/select.c b/src/select.c
+index 1762c76..64f4839 100644
+--- a/src/select.c
++++ b/src/select.c
+@@ -164,7 +164,7 @@ SelectObject (void)
+ 	break;
+       }
+ 
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       {
+ 	ElementType *element = (ElementType *) ptr1;
+ 
+@@ -187,7 +187,7 @@ SelectObject (void)
+ 	  TOGGLE_FLAG (SELECTEDFLAG, text);
+ 	}
+ 	END_LOOP;
+-	AddObjectToFlagUndoList (ELEMENT_TYPE, element, element, element);
++	AddObjectToFlagUndoList (PCB_ELEMENT_TYPE, element, element, element);
+ 	TOGGLE_FLAG (SELECTEDFLAG, element);
+ 	if (PCB->ElementOn &&
+ 	    ((TEST_FLAG (ONSOLDERFLAG, element) != 0) == SWAP_IDENT ||
+@@ -342,7 +342,7 @@ SelectBlock (BoxType *Box, bool select)
+ 	  if ((PCB->PinOn || !select) && ELEMENT_IN_BOX (element, Box))
+ 	    if (TEST_FLAG (SELECTEDFLAG, element) != select)
+ 	      {
+-		AddObjectToFlagUndoList (ELEMENT_TYPE,
++		AddObjectToFlagUndoList (PCB_ELEMENT_TYPE,
+ 					 element, element, element);
+ 		ASSIGN_FLAG (SELECTEDFLAG, select, element);
+ 		PIN_LOOP (element);
+@@ -480,7 +480,7 @@ ObjectOperation (ObjectFunctionType *F,
+ 	return (F->Via ((PinType *) Ptr1));
+       break;
+ 
+-    case ELEMENT_TYPE:
++    case PCB_ELEMENT_TYPE:
+       if (F->Element)
+ 	return (F->Element ((ElementType *) Ptr1));
+       break;
+@@ -588,14 +588,14 @@ SelectedOperation (ObjectFunctionType *F, bool Reset, int type)
+   ENDALL_LOOP;
+ 
+   /* elements silkscreen */
+-  if (type & ELEMENT_TYPE && PCB->ElementOn && F->Element)
++  if (type & PCB_ELEMENT_TYPE && PCB->ElementOn && F->Element)
+     ELEMENT_LOOP (PCB->Data);
+   {
+     if (TEST_FLAG (SELECTEDFLAG, element))
+       {
+ 	if (Reset)
+ 	  {
+-	    AddObjectToFlagUndoList (ELEMENT_TYPE, element, element, element);
++	    AddObjectToFlagUndoList (PCB_ELEMENT_TYPE, element, element, element);
+ 	    CLEAR_FLAG (SELECTEDFLAG, element);
+ 	  }
+ 	F->Element (element);
+@@ -877,7 +877,7 @@ SelectObjectByName (int Type, char *Pattern, bool select)
+   }
+   ENDALL_LOOP;
+ 
+-  if (PCB->ElementOn && (Type & ELEMENT_TYPE))
++  if (PCB->ElementOn && (Type & PCB_ELEMENT_TYPE))
+     ELEMENT_LOOP (PCB->Data);
+   {
+     if (!TEST_FLAG (LOCKFLAG, element)
+@@ -888,7 +888,7 @@ SelectObjectByName (int Type, char *Pattern, bool select)
+ 	String name = ELEMENT_NAME (PCB, element);
+ 	if (name && REGEXEC (name))
+ 	  {
+-	    AddObjectToFlagUndoList (ELEMENT_TYPE, element, element, element);
++	    AddObjectToFlagUndoList (PCB_ELEMENT_TYPE, element, element, element);
+ 	    ASSIGN_FLAG (SELECTEDFLAG, select, element);
+ 	    PIN_LOOP (element);
+ 	    {
+diff --git a/src/select.h b/src/select.h
+index 40e475d..4d800a5 100644
+--- a/src/select.h
++++ b/src/select.h
+@@ -33,7 +33,7 @@
+ #include "global.h"
+ 
+ #define SELECT_TYPES	\
+-	(VIA_TYPE | LINE_TYPE | TEXT_TYPE | POLYGON_TYPE | ELEMENT_TYPE |	\
++	(VIA_TYPE | LINE_TYPE | TEXT_TYPE | POLYGON_TYPE | PCB_ELEMENT_TYPE |	\
+ 	 PIN_TYPE | PAD_TYPE | ELEMENTNAME_TYPE | RATLINE_TYPE | ARC_TYPE)
+ 
+ bool SelectObject (void);
+diff --git a/src/strflags.c b/src/strflags.c
+index f29da5b..2d1f264 100644
+--- a/src/strflags.c
++++ b/src/strflags.c
+@@ -93,11 +93,11 @@ static FlagBitsType object_flagbits[] = {
+   { RATFLAG, N ("rat"), RATLINE_TYPE },
+   { PININPOLYFLAG, N ("pininpoly"), PIN_TYPES | PAD_TYPE },
+   { CLEARPOLYFLAG, N ("clearpoly"), POLYGON_TYPE },
+-  { HIDENAMEFLAG, N ("hidename"), ELEMENT_TYPE },
+-  { DISPLAYNAMEFLAG, N ("showname"), ELEMENT_TYPE },
++  { HIDENAMEFLAG, N ("hidename"), PCB_ELEMENT_TYPE },
++  { DISPLAYNAMEFLAG, N ("showname"), PCB_ELEMENT_TYPE },
+   { CLEARLINEFLAG, N ("clearline"), LINE_TYPE | ARC_TYPE | TEXT_TYPE },
+   { SELECTEDFLAG, N ("selected"), ALL_TYPES },
+-  { ONSOLDERFLAG, N ("onsolder"), ELEMENT_TYPE | PAD_TYPE | TEXT_TYPE },
++  { ONSOLDERFLAG, N ("onsolder"), PCB_ELEMENT_TYPE | PAD_TYPE | TEXT_TYPE },
+   { AUTOFLAG, N ("auto"), ALL_TYPES },
+   { SQUAREFLAG, N ("square"), PIN_TYPES | PAD_TYPE },
+   { RUBBERENDFLAG, N ("rubberend"), LINE_TYPE | ARC_TYPE },
+diff --git a/src/undo.c b/src/undo.c
+index ca41c74..58ef836 100644
+--- a/src/undo.c
++++ b/src/undo.c
+@@ -556,7 +556,7 @@ UndoMirror (UndoListType *Entry)
+   /* lookup entry by ID */
+   type =
+     SearchObjectByID (PCB->Data, &ptr1, &ptr2, &ptr3, Entry->ID, Entry->Kind);
+-  if (type == ELEMENT_TYPE)
++  if (type == PCB_ELEMENT_TYPE)
+     {
+       ElementType *element = (ElementType *) ptr3;
+       if (andDraw)
+-- 
+2.1.4
+

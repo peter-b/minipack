@@ -1,0 +1,59 @@
+From 288ab48d109351eaa31f2c671c83b5a49c89245b Mon Sep 17 00:00:00 2001
+From: Vladimir Zhbanov <vzhbanov@gmail.com>
+Date: Tue, 21 Apr 2015 12:57:25 +0300
+Subject: [PATCH 2/7] libgeda,gschem: Use 'primitive-load' instead of 'load'.
+
+On Windows system, guile post-2.0.11 prepends a %load-path
+directory to the path that is already built using build-path for
+some reason, which leads to strange names, e.g.
+"d:\usr\share\geda\d:/usr/share/gEDA/gschem-colormap-darkbg", in
+several case, which, in turn, breaks loading of rc files by gschem.
+Using 'primitive-load' instead of 'load' solves this.
+---
+ gschem/lib/system-gschemrc.scm | 2 +-
+ libgeda/lib/system-gafrc       | 2 +-
+ libgeda/scheme/geda.scm        | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/gschem/lib/system-gschemrc.scm b/gschem/lib/system-gschemrc.scm
+index 3fd140c..bb5e2bb 100644
+--- a/gschem/lib/system-gschemrc.scm
++++ b/gschem/lib/system-gschemrc.scm
+@@ -32,7 +32,7 @@
+ ; light (almost white) background.  The dark background is the
+ ; original look.
+ ;
+-(load (build-path geda-rc-path "gschem-colormap-darkbg")) ; dark background
++(primitive-load (build-path geda-rc-path "gschem-colormap-darkbg")) ; dark background
+ ;(load (build-path geda-rc-path "gschem-colormap-lightbg")) ; light background
+ ;(load (build-path geda-rc-path "gschem-colormap-bw")) ; light background, bw
+ 
+diff --git a/libgeda/lib/system-gafrc b/libgeda/lib/system-gafrc
+index 2e4bfb9..8e5a1a7 100644
+--- a/libgeda/lib/system-gafrc
++++ b/libgeda/lib/system-gafrc
+@@ -108,7 +108,7 @@
+ ; dark background. The dark background is the original look.
+ ;
+ ;(load (build-path geda-rc-path "print-colormap-darkbg")) ; dark background
+-(load (build-path geda-rc-path "print-colormap-lightbg")) ; light background
++(primitive-load (build-path geda-rc-path "print-colormap-lightbg")) ; light background
+ 
+ 
+ ;;;; Process configuration script directory
+diff --git a/libgeda/scheme/geda.scm b/libgeda/scheme/geda.scm
+index 160483c..43b4d62 100644
+--- a/libgeda/scheme/geda.scm
++++ b/libgeda/scheme/geda.scm
+@@ -45,7 +45,7 @@
+           (if (and (regular-file? path)
+                    (has-suffix? path ".scm")
+                    (access? path R_OK))
+-            (eval-protected `(load ,path))
++            (eval-protected `(primitive-load ,path))
+             #f
+           )))
+       (closedir dir))
+-- 
+2.1.4
+

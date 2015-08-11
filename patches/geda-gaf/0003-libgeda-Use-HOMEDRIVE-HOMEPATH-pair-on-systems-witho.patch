@@ -1,0 +1,45 @@
+From e841c1003ab6799fef13dc011553d3038efaffc6 Mon Sep 17 00:00:00 2001
+From: Vladimir Zhbanov <vzhbanov@gmail.com>
+Date: Tue, 21 Apr 2015 13:11:26 +0300
+Subject: [PATCH 3/7] libgeda: Use $HOMEDRIVE/$HOMEPATH pair on systems without
+ $HOME.
+
+On some systems, such as WinXP, $HOME may be not defined.
+In such a case, we use the $HOMEDRIVE/$HOMEPATH pair instead.
+
+Besides, if no home path has been found, the (if ...) procedure
+signals it returning #f instead of just failing when the user calls
+(user-data-dir) or (user-config-dir).
+---
+ libgeda/scheme/geda/os.scm | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/libgeda/scheme/geda/os.scm b/libgeda/scheme/geda/os.scm
+index e6ae740..7ea8723 100644
+--- a/libgeda/scheme/geda/os.scm
++++ b/libgeda/scheme/geda/os.scm
+@@ -51,7 +51,20 @@
+ (define-public sys-config-dirs %sys-config-dirs)
+ 
+ (define-public (user-data-dir)
+-  (string-join (list (getenv "HOME") ".gEDA") separator))
++  (let ((home-path (getenv "HOME"))
++        (home-path-alt (getenv "HOMEPATH"))
++        (home-drive-alt (getenv "HOMEDRIVE")))
++    ;; On some systems, such as WinXP, $HOME may be not defined.
++    ;; In such a case, we can use the $HOMEDRIVE-$HOMEPATH pair instead.
++    (if home-path
++      (string-join (list home-path ".gEDA") separator)
++      (if home-path-alt
++        (string-join
++          (list
++            (string-append home-drive-alt home-path-alt) ".gEDA")
++          separator)
++        ;; Return #f if any home variable has not been found.
++        #f))))
+ 
+ (define-public user-config-dir user-data-dir)
+ 
+-- 
+2.1.4
+

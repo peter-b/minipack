@@ -42,9 +42,8 @@ libraries are:
   libgcc_s_sjlj-1.dll
 
 To install them, do as follows:
-  cd mingw-libs/
-  ln -s /usr/lib/gcc/i686-w64-mingw32/4.9-win32/libgcc_s_sjlj-1.dll
-  make install prefix=/special
+  cp /usr/lib/gcc/i686-w64-mingw32/4.9-win32/libgcc_s_sjlj-1.dll mingw-libs/
+  make install prefix=/my_installation_directory
 
 The path to the MinGW DLL's on your system may differ.
 

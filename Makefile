@@ -2,7 +2,7 @@ prefix = ./install
 instname = usr/
 outputdir = ${prefix}/${instname}
 
-mingw-libs = mingw-libs/libgcc_s_sjlj-1.dll
+libs = mingw-libs/libgcc_s_sjlj-1.dll
 
 packages = libtool mingw-libgnurx libffi gmp libiconv libunistring gettext libatomic_ops gc jpeg zlib libpng tiff freetype pixman glib atk cairo pango gdk-pixbuf gtk+ guile geda-gaf gd gtkglext pcb gerbv pkgconfig-wrapper
 
@@ -64,8 +64,15 @@ geda-gaf: guile glib gtk+
 pcb: mingw-libgnurx gtk+ gd
 gerbv: mingw-libgnurx gtk+
 
+mingw-libs:
+	[ -d $@ ] || mkdir $@
 
-install-libs: ${mingw-libs}
+# NOTE: This recipe works only on Debian compatible systems. You may want to run
+# 'sudo update-dlocatedb' before this.
+mingw-libs/libgcc_s_sjlj-1.dll: mingw-libs
+	cd $< && cp $$(dlocate libgcc_s_sjlj-1.dll|grep win32|cut -d' ' -f 2) .
+
+install-libs: ${libs}
 	cp $^ ./result/bin/
 
 install: install-libs

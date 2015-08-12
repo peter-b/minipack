@@ -1,0 +1,61 @@
+From ce4dd350e8f11d8a88966bc3218f0d737c22ecac Mon Sep 17 00:00:00 2001
+From: Vladimir Zhbanov <vzhbanov@gmail.com>
+Date: Wed, 29 Apr 2015 15:38:35 +0300
+Subject: [PATCH 4/7] gnetlist: Added function to work around guile/gc runtime
+ bug.
+
+---
+ gnetlist/include/prototype.h |  1 +
+ gnetlist/src/s_rename.c      | 24 ++++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
+
+diff --git a/gnetlist/include/prototype.h b/gnetlist/include/prototype.h
+index d90e59e..e2873fb 100644
+--- a/gnetlist/include/prototype.h
++++ b/gnetlist/include/prototype.h
+@@ -96,6 +96,7 @@ char *s_netlist_netname_of_netid (TOPLEVEL *pr_current,
+ 				  NETLIST *netlist_head,
+ 				  int net_id);
+ /* s_rename.c */
++void s_rename_dummy(void);
+ void s_rename_init(void);
+ void s_rename_destroy_all(void);
+ void s_rename_next_set(void);
+diff --git a/gnetlist/src/s_rename.c b/gnetlist/src/s_rename.c
+index a75d770..d50a089 100644
+--- a/gnetlist/src/s_rename.c
++++ b/gnetlist/src/s_rename.c
+@@ -59,6 +59,30 @@ typedef struct {
+ static SET * first_set = NULL;
+ static SET * last_set = NULL;
+ 
++typedef struct {
++    char *src;
++    char *dest;
++} DUMMY;
++
++#define MAX_X 10
++#define MAX_Y 64
++
++static DUMMY dummy_array[MAX_X][MAX_Y];
++
++
++/*! \brief Dummy function to work around guile/gc bug */
++void s_rename_dummy(void)
++{
++  int i, j;
++
++  for (i = 0; i < MAX_X; i++) {
++	for (j = 0; j < MAX_Y; j++) {
++	    dummy_array[i][j].src = NULL;
++	    dummy_array[i][j].dest = NULL;
++	}
++  }
++}
++
+ void s_rename_init(void)
+ {
+     if (first_set)
+-- 
+2.1.4
+

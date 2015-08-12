@@ -1,0 +1,72 @@
+From fb47065328909d3c9326ffa5cdf11f806c8ff066 Mon Sep 17 00:00:00 2001
+From: Vladimir Zhbanov <vzhbanov@gmail.com>
+Date: Wed, 29 Apr 2015 16:50:21 +0300
+Subject: [PATCH 5/7] gsymcheck: Added function to work around guile/gc runtime
+ bug.
+
+---
+ gsymcheck/include/prototype.h |  2 ++
+ gsymcheck/src/Makefile.am     |  1 +
+ gsymcheck/src/s_rename.c      | 28 ++++++++++++++++++++++++++++
+ 3 files changed, 31 insertions(+)
+ create mode 100644 gsymcheck/src/s_rename.c
+
+diff --git a/gsymcheck/include/prototype.h b/gsymcheck/include/prototype.h
+index b71ab0e..da8d368 100644
+--- a/gsymcheck/include/prototype.h
++++ b/gsymcheck/include/prototype.h
+@@ -37,3 +37,5 @@ void s_log_update (const gchar *log_domain, GLogLevelFlags log_level, const gcha
+ SYMCHECK *s_symstruct_init(void);
+ void s_symstruct_print(SYMCHECK *s_current);
+ void s_symstruct_free(SYMCHECK *s_current);
++/* ------------- s_rename.c ------------- */
++void s_rename_dummy(void);
+diff --git a/gsymcheck/src/Makefile.am b/gsymcheck/src/Makefile.am
+index 5a77f3a..39001d5 100644
+--- a/gsymcheck/src/Makefile.am
++++ b/gsymcheck/src/Makefile.am
+@@ -12,6 +12,7 @@ gsymcheck_SOURCES = \
+ 	parsecmd.c \
+ 	s_check.c \
+ 	s_log.c \
++	s_rename.c \
+ 	s_symstruct.c
+ 
+ gsymcheck_CPPFLAGS = -I$(top_srcdir)/libgeda/include -I$(srcdir)/../include \
+diff --git a/gsymcheck/src/s_rename.c b/gsymcheck/src/s_rename.c
+new file mode 100644
+index 0000000..918b400
+--- /dev/null
++++ b/gsymcheck/src/s_rename.c
+@@ -0,0 +1,28 @@
++#include <libgeda/libgeda.h>
++#include "../include/struct.h"
++#include "../include/prototype.h"
++
++
++typedef struct {
++    char *src;
++    char *dest;
++} DUMMY;
++
++#define MAX_X 10
++#define MAX_Y 64
++
++static DUMMY dummy_array[MAX_X][MAX_Y];
++
++
++/*! \brief Dummy function to work around guile/gc bug */
++void s_rename_dummy(void)
++{
++  int i, j;
++
++  for (i = 0; i < MAX_X; i++) {
++	for (j = 0; j < MAX_Y; j++) {
++	    dummy_array[i][j].src = NULL;
++	    dummy_array[i][j].dest = NULL;
++	}
++  }
++}
+-- 
+2.1.4
+

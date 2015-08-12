@@ -1,0 +1,70 @@
+From c5a3e372779a0260ea85d402c3fefb54aabea4b4 Mon Sep 17 00:00:00 2001
+From: Vladimir Zhbanov <vzhbanov@gmail.com>
+Date: Thu, 30 Apr 2015 13:31:08 +0300
+Subject: [PATCH 6/7] gaf: Added function to work around guile/gc runtime bug.
+
+---
+ gaf/Makefile.am |  1 +
+ gaf/builtins.h  |  2 ++
+ gaf/s_rename.c  | 27 +++++++++++++++++++++++++++
+ 3 files changed, 30 insertions(+)
+ create mode 100644 gaf/s_rename.c
+
+diff --git a/gaf/Makefile.am b/gaf/Makefile.am
+index d54f5d8..6814997 100644
+--- a/gaf/Makefile.am
++++ b/gaf/Makefile.am
+@@ -17,6 +17,7 @@ gaf_SOURCES = \
+ 	gaf.c \
+ 	config.c \
+ 	export.c \
++	s_rename.c \
+ 	shell.c
+ 
+ gaf_CPPFLAGS = \
+diff --git a/gaf/builtins.h b/gaf/builtins.h
+index bc6c4d7..8975b0c 100644
+--- a/gaf/builtins.h
++++ b/gaf/builtins.h
+@@ -20,3 +20,5 @@
+ int cmd_shell (int argc, char **argv);
+ int cmd_config (int argc, char **argv);
+ int cmd_export (int argc, char **argv);
++/* ------------- s_rename.c ------------- */
++void s_rename_dummy(void);
+diff --git a/gaf/s_rename.c b/gaf/s_rename.c
+new file mode 100644
+index 0000000..7e34f1d
+--- /dev/null
++++ b/gaf/s_rename.c
+@@ -0,0 +1,27 @@
++#include <libgeda/libgeda.h>
++#include <libgeda/libgedaguile.h>
++
++
++typedef struct {
++    char *src;
++    char *dest;
++} DUMMY;
++
++#define MAX_X 10
++#define MAX_Y 64
++
++static DUMMY dummy_array[MAX_X][MAX_Y];
++
++
++/*! \brief Dummy function to work around guile/gc bug */
++void s_rename_dummy(void)
++{
++  int i, j;
++
++  for (i = 0; i < MAX_X; i++) {
++	for (j = 0; j < MAX_Y; j++) {
++	    dummy_array[i][j].src = NULL;
++	    dummy_array[i][j].dest = NULL;
++	}
++  }
++}
+-- 
+2.1.4
+

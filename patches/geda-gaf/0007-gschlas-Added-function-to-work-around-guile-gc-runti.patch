@@ -1,0 +1,71 @@
+From 815b6587bc45b197ab221e789d159d9aac2a2dea Mon Sep 17 00:00:00 2001
+From: Vladimir Zhbanov <vzhbanov@gmail.com>
+Date: Wed, 12 Aug 2015 09:08:20 +0300
+Subject: [PATCH 7/7] gschlas: Added function to work around guile/gc runtime
+ bug.
+
+---
+ utils/gschlas/Makefile.am |  1 +
+ utils/gschlas/s_rename.c  | 27 +++++++++++++++++++++++++++
+ utils/include/prototype.h |  2 ++
+ 3 files changed, 30 insertions(+)
+ create mode 100644 utils/gschlas/s_rename.c
+
+diff --git a/utils/gschlas/Makefile.am b/utils/gschlas/Makefile.am
+index 978960e..cdacd87 100644
+--- a/utils/gschlas/Makefile.am
++++ b/utils/gschlas/Makefile.am
+@@ -10,6 +10,7 @@ gschlas_SOURCES = \
+ 	gschlas.c \
+ 	i_vars.c \
+ 	parsecmd.c \
++	s_rename.c \
+ 	s_util.c
+ 
+ gschlas_CPPFLAGS = -I$(top_srcdir)/libgeda/include -I$(srcdir)/../include \
+diff --git a/utils/gschlas/s_rename.c b/utils/gschlas/s_rename.c
+new file mode 100644
+index 0000000..5946e51
+--- /dev/null
++++ b/utils/gschlas/s_rename.c
+@@ -0,0 +1,27 @@
++#include <libgeda/libgeda.h>
++#include "../include/prototype.h"
++
++
++typedef struct {
++    char *src;
++    char *dest;
++} DUMMY;
++
++#define MAX_X 10
++#define MAX_Y 64
++
++static DUMMY dummy_array[MAX_X][MAX_Y];
++
++
++/*! \brief Dummy function to work around guile/gc bug */
++void s_rename_dummy(void)
++{
++  int i, j;
++
++  for (i = 0; i < MAX_X; i++) {
++	for (j = 0; j < MAX_Y; j++) {
++	    dummy_array[i][j].src = NULL;
++	    dummy_array[i][j].dest = NULL;
++	}
++  }
++}
+diff --git a/utils/include/prototype.h b/utils/include/prototype.h
+index 2948e9e..f4d1434 100644
+--- a/utils/include/prototype.h
++++ b/utils/include/prototype.h
+@@ -16,3 +16,5 @@ void usage(char *cmd);
+ int parse_commandline(int argc, char *argv[]);
+ /* s_util.c */
+ void s_util_embed(TOPLEVEL *pr_current, int embed_mode);
++/* s_rename.c */
++void s_rename_dummy(void);
+-- 
+2.1.4
+

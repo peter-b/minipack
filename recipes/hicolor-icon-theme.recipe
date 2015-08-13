@@ -1,0 +1,6 @@
+name=hicolor-icon-theme
+major=0.15
+version=$major
+release=1
+download=http://icon-theme.freedesktop.org/releases
+source_package_type=tar.xz

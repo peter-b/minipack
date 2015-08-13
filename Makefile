@@ -4,7 +4,7 @@ outputdir = ${prefix}/${instname}
 
 libs = mingw-libs/libgcc_s_sjlj-1.dll
 
-packages = libtool mingw-libgnurx libffi gmp libiconv libunistring gettext libatomic_ops gc jpeg zlib libpng tiff freetype pixman glib atk cairo pango gdk-pixbuf gtk+ guile geda-gaf gd pcb gerbv pkgconfig-wrapper
+packages = libtool mingw-libgnurx libffi gmp libiconv libunistring gettext libatomic_ops gc jpeg zlib libpng tiff freetype pixman glib atk cairo pango gdk-pixbuf gtk+ hicolor-icon-theme guile geda-gaf gd pcb gerbv pkgconfig-wrapper
 
 .PHONY: all install install-libs clean maintainer-clean ${packages}
 
@@ -22,6 +22,7 @@ all: geda-gaf pcb gerbv
 #   tiff
 #   freetype
 #   pixman
+#   hicolor-icon-theme
 #   gd
 
 # Time stamps directory
@@ -53,7 +54,8 @@ cairo: libpng pixman freetype
 # it must be built before pango
 pango: glib cairo
 gdk-pixbuf: glib tiff jpeg libpng
-gtk+: atk cairo pango gdk-pixbuf
+# hicolor-icon-theme is not required
+gtk+: hicolor-icon-theme atk cairo pango gdk-pixbuf
 guile: mingw-libgnurx gmp libunistring libffi gc
 geda-gaf: guile glib gtk+
 #gtkglext: gtk+

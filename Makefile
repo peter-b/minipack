@@ -1,6 +1,9 @@
 prefix = ./install
 instname = usr/
 outputdir = ${prefix}/${instname}
+archive = geda
+xzarchive  = $(archive:%=%.tar.xz)
+ziparchive = $(archive:%=%.zip)
 
 libs = mingw-libs/libgcc_s_sjlj-1.dll
 
@@ -81,6 +84,15 @@ install: install-libs
 	cp pixbuf.bat ./result/bin/
 	[ -e ${outputdir} ] && rm -rf ${outputdir}
 	cp --preserve=timestamps ./result/ -r -L ${outputdir}
+
+xz: ${xzarchive}
+${xzarchive}: ${outputdir}
+	tar -c $< | xz > $@
+
+zip: ${ziparchive}
+${ziparchive}:
+	cd install/ && zip -r $@ ${instname}
+	mv install/$@ .
 
 clean:
 	for i in ${packages}; do ./mpk clean $$i; done

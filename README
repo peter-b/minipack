@@ -13,8 +13,8 @@ The tool can be run from anywhere, but it looks for a minipack.conf file
 in the current directory or in a parent directory.
 
 Some recipes for cross-compiling to Windows are included in the distribution:
-* libraries: gtk+, guile, gd, freetype, libpng, jpeg, zlib, gettext.
-* applications: gEDA/gaf, PCB.
+* libraries: gtk+, glib, guile, mingw-libgnurx, gd, and their dependencies.
+* applications: gEDA/gaf, PCB, gerbv.
 
 See Makefile for a full list.
 

@@ -1,0 +1,15 @@
+Setting of the environment variables
+====================================
+
+Below, $BUILD$ means your target directory.  Use your preferred
+path instead.
+
+You must set variables as follows:
+  set GUILE_LOAD_COMPILED_PATH=$BUILD$\usr\lib\guile\2.0\ccache;$BUILD$\usr\lib\guile\2.0\site-ccache
+  set GUILE_LOAD_PATH=$BUILD$\usr\share\guile\2.0;$BUILD$\usr\share\guile\site\2.0;$BUILD$\usr\share\guile\site;$BUILD$\usr\share\guile
+  set GUILE_SYSTEM_EXTENSIONS_PATH=$BUILD$\usr\lib;$BUILD$\usr\lib\guile\2.0\extensions
+
+Finally, add your binary directory path to the PATH variable. Add:
+  ;$BUILD$\usr\bin
+
+After unpacking run 'pixbuf.bat' in the target directory.

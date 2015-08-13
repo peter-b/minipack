@@ -81,6 +81,7 @@ install-libs: ${libs}
 	cp $^ ./result/bin/
 
 install: install-libs
+	cp README.windows ./result/README
 	cp pixbuf.bat ./result/bin/
 	[ -e ${outputdir} ] && rm -rf ${outputdir}
 	cp --preserve=timestamps ./result/ -r -L ${outputdir}

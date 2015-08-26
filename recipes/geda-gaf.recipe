@@ -2,7 +2,7 @@ name=geda-gaf
 version=1.9.1
 download=git://git.geda-project.org
 repository=geda-gaf
-commit=7764818
+commit=4cc5d8f
 release=1
 configure_opt=--disable-update-xdg-database
 

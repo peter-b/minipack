@@ -95,9 +95,10 @@ ${ziparchive}:
 	cd install/ && zip -r $@ ${instname}
 	mv install/$@ .
 
+# You can use, e.g. 'make packages=geda-gaf clean'
 clean:
 	for i in ${packages}; do ./mpk clean $$i; done
-	rm -f .stamp/*
+	for i in ${packages}; do rm -f .stamp/$$i; done
 
 maintainer-clean: clean
 	rm -rf result/*

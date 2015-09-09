@@ -31,10 +31,19 @@ src_get_source()
     cd $name && git pull
   else
     git clone $pkg_download
+    # cd to the package directory to ensure 'git checkout' will not fail
+    cd $name
   fi
 
   if [ $? != 0 ]; then
     echo >&2 "$(basename $0) source: Failed to clone $name"
+    exit 1
+  fi
+
+  git checkout $commit
+
+  if [ $? != 0 ]; then
+    echo >&2 "$(basename $0) source: Could not checkout commit $commit for $sourcename"
     exit 1
   fi
 }

@@ -1,6 +1,6 @@
 name=gtk+
 major=2.24
-minor=27
+minor=29
 release=1
 version=$major.$minor
 download=http://ftp.gnome.org/pub/gnome/sources/$name/$major

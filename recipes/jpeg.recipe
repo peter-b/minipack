@@ -1,5 +1,5 @@
 name=jpeg
-version=7
+version=9a
 release=1
 download=http://www.ijg.org/files
 source=jpegsrc.v${version}.tar.gz

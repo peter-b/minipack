@@ -1,7 +1,8 @@
 name=cairo
-version=1.10.2
+version=1.15.2
 release=1
-download=http://www.cairographics.org/releases
+download=http://www.cairographics.org/snapshots
+source_package_type=tar.xz
 
 case "$host" in
   *mingw*)

@@ -1,9 +1,7 @@
 name=gdk-pixbuf
-major=2.22
-minor=1
+major=2.32
+minor=3
 release=1
 version=$major.$minor
 download=http://ftp.gnome.org/pub/gnome/sources/$name/$major
-
-configure_opt="
-"
+source_package_type=tar.xz

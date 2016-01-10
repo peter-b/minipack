@@ -23,7 +23,6 @@ all: geda-gaf pcb gerbv
 #   jpeg
 #   zlib
 #   tiff
-#   freetype
 #   pixman
 #   hicolor-icon-theme
 #   gd
@@ -50,7 +49,8 @@ libffi: libtool
 libunistring: libtool libiconv
 gc: libatomic_ops
 libpng: zlib
-glib: pkgconfig-wrapper zlib libffi gettext
+freetype: libpng
+glib: zlib libffi gettext
 atk: glib
 cairo: libpng pixman freetype
 # cairo is a soft dependency

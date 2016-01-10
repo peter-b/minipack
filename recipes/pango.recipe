@@ -1,11 +1,11 @@
 name=pango
-major=1.28
-minor=3
+major=1.38
+minor=1
 release=1
 version=$major.$minor
 download=http://ftp.gnome.org/pub/gnome/sources/$name/$major
+source_package_type=tar.xz
 
 configure_opt="
-  --with-included-modules
   CXX=${host:+$host-g++}
 "

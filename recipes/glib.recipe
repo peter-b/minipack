@@ -1,6 +1,6 @@
 name=glib
-major=2.42
-minor=1
+major=2.46
+minor=2
 release=1
 version=$major.$minor
 download=http://ftp.gnome.org/pub/gnome/sources/$name/$major

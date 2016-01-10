@@ -1,5 +1,50 @@
 name=gc
-version=7.4.0
+major_version=7.2
+point_version=e
+version="${major_version}${point_version}"
 release=1
 download=http://launchpad.net/libgc/main/$version/+download/
-configure_opt=--disable-threads
+#configure_opt=--disable-threads
+top_srcdir="${name}-${major_version}"
+
+src_configure ()
+{
+  :
+}
+
+src_compile ()
+{
+  # This assumes that we're compiling with GCC
+  # See also https://gist.github.com/Madsy/9578867
+  echo "Compiling gc..."
+  mkdir -p ../logs
+
+  # gc's build rules call the machine that's being used to
+  # compile it the "host", and mpk calls the *target* 
+  # machine the "host".  Yay confusion!
+  make -f Makefile.direct \
+  CC="${host}-gcc" \
+  CXX="${host}-g++" \
+  AS="${host}-as" \
+  AR="${host}-ar" \
+  RANLIB="${host}-ranlib" \
+  CFLAGS="${CFLAGS} -O2 -I./include -DATOMIC_UNCOLLECTABLE -DNO_EXECUTE_PERMISSION -DALL_INTERIOR_POINTERS" \
+  HOSTCC="gcc" \
+  HOSTCFLAGS=" -O2 -I./include -I${resultdir}/include -DATOMIC_UNCOLLECTABLE -DNO_EXECUTE_PERMISSION -DALL_INTERIOR_POINTERS" \
+  AO_INSTALL_DIR="${resultdir}" \
+  gc.a > ../logs/make.log
+}
+
+src_install ()
+{
+  echo "Installing gc..."
+  # Just copy the static library into place
+  mkdir -p ${resultdir}/lib
+  cp gc.a ${resultdir}/lib/libgc.a
+  
+  mkdir -p ${resultdir}/include
+  if test -d ${resultdir}/include/gc; then
+    rm -rf ${resultdir}/include/gc
+  fi
+  cp -r include ${resultdir}/include/gc
+}

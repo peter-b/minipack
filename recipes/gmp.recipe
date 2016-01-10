@@ -1,6 +1,6 @@
 name=gmp
-version=5.1.3
+version=6.1.0
 release=1
 origin=gnu
-configure_opt='--disable-static --enable-shared'
-
+configure_opt="--disable-static --enable-shared"
+source_package_type=tar.lz

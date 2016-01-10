@@ -2,6 +2,4 @@ name=gettext
 version=0.19.3
 release=1
 origin=gnu
-configure_opt="
-  --enable-relocatable
-  --disable-threads"
+configure_opt="--enable-relocatable"

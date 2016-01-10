@@ -1,102 +1,20 @@
 name=guile
 version=2.0.11
-commit=stable-2.0
-download=git://git.sv.gnu.org
-repository=guile.git
+origin=gnu
 release=1
 configure_opt="
   --enable-static=yes
   --enable-shared=no
+  --disable-rpath
+  --enable-debug-malloc
+  --enable-guile-debug
+  --disable-deprecated
+  --with-sysroot=${resultdir}
   --without-threads
-  --enable-regex
-"
+  BDW_GC_CFLAGS='-I${resultdir}/include'
+  BDW_GC_LIBS='-L${resultdir}/include -lgc'
+  CC_FOR_BUILD=cc
+  GUILE_FOR_BUILD=$(which guile)"
 
-src_prep()
-{
-  ./autogen.sh
-}
-
-src_get_source()
-{
-  pkg_download=$download/$repository
-
-  if [ -z "$pkg_download" ]; then
-    echo >&2 "$name: download location not found."
-    exit 1
-  fi
-
-  echo Clone repository $name from $pkg_download ...
-  cd $sourcedir
-  if [ -d $name ]; then
-    cd $name && git pull
-  else
-    git clone $pkg_download
-    # cd to the package directory to ensure 'git checkout' will not fail
-    cd $name
-  fi
-
-  if [ $? != 0 ]; then
-    echo >&2 "$(basename $0) source: Failed to clone $name"
-    exit 1
-  fi
-
-  git checkout $commit
-
-  if [ $? != 0 ]; then
-    echo >&2 "$(basename $0) source: Could not checkout commit $commit for $sourcename"
-    exit 1
-  fi
-}
-
-src_unpack_source()
-{
-  : ${top_srcdir:=$name-$version}
-
-  buildroot=$builddir/$name-$version-$release
-
-  if [ -d $buildroot/$top_srcdir ]; then
-    exit 0
-  fi
-
-  sourcename=$sourcedir/$name
-  if [ ! -e $sourcename ]; then
-    $mpk source $pkg
-    if [ ! -e $sourcename ]; then
-      echo >&2 "$(basename $0) unpack: Could not find source for $pkg"
-      exit 1
-    fi
-  fi
-
-  mkdir -p $buildroot
-  cp -ar $sourcename $buildroot/$name-$version
-
-  cd $buildroot/${top_srcdir}
-
-  git checkout $commit
-
-  if [ $? != 0 ]; then
-    echo >&2 "$(basename $0) unpack: Could not checkout commit $commit for $sourcename"
-    exit 1
-  fi
-
-  pkg_patchdir=$patchdir/$name
-
-  if [ -d $pkg_patchdir ]; then
-    patches=`find $pkg_patchdir -name '*.patch' | sort`
-    for p in $patches; do
-      patch -p1 -i "$p"
-      if [ $? != 0 ]; then
-        echo >&2 "$(basename $0) unpack: Failed apply patches for $sourcename"
-        exit 1
-      fi
-    done
-  fi
-
-  src_prep
-
-  if [ $? != 0 ]; then
-    echo >&2 "$(basename $0) unpack: Failed to prepare build directory for $sourcename"
-    exit 1
-  fi
-
-}
+CFLAGS="${CFLAGS} -DGC_NO_DLL -DGC_WIN32_THREADS"
+LDFLAGS="${LDFLAGS}"

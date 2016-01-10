@@ -1,5 +1,5 @@
 name=libunistring
-version=0.9.3
+version=0.9.5
 release=1
 origin=gnu
 configure_opt=--enable-threads=win32

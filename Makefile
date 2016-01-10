@@ -59,7 +59,7 @@ pango: glib cairo
 gdk-pixbuf: glib tiff jpeg libpng
 # hicolor-icon-theme is not required
 gtk+: hicolor-icon-theme atk cairo pango gdk-pixbuf
-guile: mingw-libgnurx gmp libunistring libffi gc
+guile: gmp libunistring libffi gc gettext
 geda-gaf: guile glib gtk+
 #gtkglext: gtk+
 # pcb needs tk to be installed on the build system

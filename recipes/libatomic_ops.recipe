@@ -1,4 +1,13 @@
+# We use the version of libatomic_ops bundled with gc
+
+# FIXME these rules are not quite right because the configure & build
+# logs end up in the wrong place
+
 name=libatomic_ops
-version=7.4.2
+major_version=7.2
+point_version=e
+version=${major_version}${point_version}
 release=1
-download=http://www.ivmaisoft.com/_bin/atomic_ops/
+download=http://launchpad.net/libgc/main/$version/+download/
+source=gc-${version}.tar.gz
+top_srcdir="gc-${major_version}/${name}"

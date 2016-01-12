@@ -12,7 +12,7 @@ configure_opt="
   --with-sysroot=${resultdir}
   --without-threads
   BDW_GC_CFLAGS='-I${resultdir}/include'
-  BDW_GC_LIBS='-L${resultdir}/include -lgc'
+  BDW_GC_LIBS='-L${resultdir}/lib -lgc'
   CC_FOR_BUILD=cc
   GUILE_FOR_BUILD=$(which guile)"
 
